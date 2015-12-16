@@ -1,0 +1,45 @@
+#ifndef EVENT_QUEUE_EPP
+#define EVENT_QUEUE_EPP
+
+/* Extention to the EventQueue header.
+ * This was a comperamize to allow the template definition to be in the header
+ * while keeping only the human needed interface in the the hpp file itself.
+ * For some reason my other work arounds just didn't work this time.
+ */
+
+// Constructors and Deconstructor ============================================
+// Creates an empty EventQueue.
+template<typename T>
+EventQueue<T>::EventQueue () :
+  data()
+{}
+
+// Deconstructor
+template<typename T>
+EventQueue<T>::~EventQueue ()
+{}
+
+// Implementation Functions ==================================================
+// Add a new event to the EventQueue.
+template<typename T>
+void EventQueue<T>::regesterEvent (T const & event)
+{
+  data.push(event);
+}
+
+// Check the first element in the EventQueue, copying and removing it if
+//   possible and returning the success.
+template<typename T>
+bool EventQueue<T>::pollEvent (T & event)
+{
+  if (data.empty())
+    return false;
+  else
+  {
+    event = data.front();
+    data.pop();
+    return true;
+  }
+}
+
+#endif//EVENT_QUEUE_EPP

@@ -1,0 +1,33 @@
+#ifndef PART_AI_EPP
+#define PART_AI_EPP
+
+/* Exention to the PartAI header, this contains the definition of some of
+ * PartAI's members, that is to say those that are really small and could
+ * probably be inlined. This does partial an exparement to see if the epp
+ * files are worth it, this should allow for slightly more effeciant functions
+ * by inlining, not that I should notice the difference, without cluttering
+ * the header. Does add a little bit to the depencances if you are not using
+ * anything from the Mob class, on the bright side it saves the sub-classes
+ * an include on Mob.
+ */
+
+#include "mob.hpp"
+
+// They are here because it should allow them to be inlined and ignored later.
+
+// Move the mob relative movement to its currant location.
+inline void PartAI::moveMob (Mob & mob, float x, float y)
+{
+  mob.sprite.move(x, y);
+  mob.phys.x += x;
+  mob.phys.y += y;
+}
+
+// Accelerate the Mob, change it's velocity relavant to it currant velocity.
+inline void PartAI::accelMob (Mob & mob, float ddx, float ddy)
+{
+  mob.phys.dx += ddx;
+  mob.phys.dy += ddy;
+}
+
+#endif//PART_AI_EPP

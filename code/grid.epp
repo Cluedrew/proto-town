@@ -1,0 +1,261 @@
+#ifndef GRID_EPP
+#define GRID_EPP
+
+// Implementation of the grid class.
+
+#include <stdexcept>
+
+// Static Member initalization ===============================================
+template<typename T>
+std::string Grid<T>::outOfRangeAt = std::string("Grid::at: out_of_range");
+template<typename T>
+std::string Grid<T>::outOfRangeSb = std::string("Grid::subGrid: out_of_range");
+
+// Constructors and Deconstructor ==================================================
+// Basic constructor, creates a x by y Grid.
+template<typename T>
+Grid<T>::Grid (int x, int y, T const & fill) :
+  xLen(x), yLen(y), data(x * y, fill)
+{}
+
+// Copy constructor
+template<typename T>
+Grid<T>::Grid (Grid<T> const & other) :
+  xLen(other.xLen), yLen(other.yLen), data(other.data)
+{}
+
+// Vector to Grid constructor, fill a grid with the contents of the vector.
+template<typename T>
+Grid<T>::Grid (int x, int y, std::vector<T> const & fill) :
+  xLen(x), yLen(y), data(fill)
+{
+  // check that the vector was the correct length.
+  if (x * y != data.size())
+    throw std::invalid_argument(
+        std::string("Grid::Grid (vector): invalid_argument"));
+}
+
+// Mapping constructor, fill each item in the Grid with the result of a map.
+template<typename T>
+Grid<T>::Grid (int x, int y, T(*fill)(int xi, int yi)) :
+  xLen(x), yLen(y), data()
+{
+  for (int yi = 0 ; yi < y ; ++yi)
+    for (int xi = 0 ; xi < x ; ++xi)
+      data.push_back(fill(xi, yi));
+}
+
+// Deconstructor
+template<typename T>
+Grid<T>::~Grid() {}
+
+// Operator Overloads ==============================================================
+// Assignment operator
+template<typename T>
+Grid<T> & Grid<T>::operator= (Grid<T> const & other)
+{
+  // Check to see that the sizes match.
+  if (xLen != other.xLen || yLen != other.yLen)
+    throw std::invalid_argument(
+        std::string("Grid::operator= : invalid_argument"));
+  data = other.data;
+  return *this;
+}
+
+// Range Functions ===========================================================
+// Check to see if a given area is with the grid.
+template<typename T>
+bool Grid<T>::inRange (sf::IntRect const & bounds) const
+{
+  return 0 <= bounds.left && 0 <= bounds.top &&
+      0 <= bounds.width && 0 <= bounds.height &&
+      bounds.left + bounds.width < xSize() &&
+      bounds.top + bounds.height < ySize();
+}
+
+// Check to see if a given area is with the grid.
+template<typename T>
+bool Grid<T>::inRange (int x1, int y1, int x2, int y2) const
+{
+  return 0 <= x1 && x1 <= x2 && x2 <= xSize() &&
+      0 <= y1 && y1 <= y2 && y2 <= ySize();
+}
+
+// Access Functions ==========================================================
+// Return the size of the Grid in one of the two given axis. (x)
+template<typename T>
+int Grid<T>::xSize() const
+{
+  return xLen;
+}
+
+// Return the size of the Grid in one of the two given axis. (y)
+template<typename T>
+int Grid<T>::ySize() const
+{
+  return yLen;
+}
+
+// Returns a reference to the element at possition (x,y).
+template<typename T>
+T & Grid<T>::at (int x, int y)
+{
+  if (x < 0 || xLen <= x || y < 0 || yLen <= y)
+    throw std::out_of_range(outOfRangeAt);
+  return data[x + xLen * y];
+}
+
+// Returns a reference to the element at possition (x,y).
+template<typename T>
+T const & Grid<T>::at (int x, int y) const
+{
+  if (x < 0 || xLen <= x || y < 0 || yLen <= y)
+    throw std::out_of_range(outOfRangeAt);
+  return data[x + xLen * y];
+}
+
+// Returns a new Grid containing a subsection of this Grid.
+template<typename T>
+Grid<T> Grid<T>::subGrid (sf::IntRect const & bounds) const
+{
+  // Check Parameters
+  if (!inRange(bounds)) throw std::out_of_range(outOfRangeSb);
+
+  // Constructed with the vector constructor
+  // (Although a lambda function getter might be faster.)
+  std::vector<T> subData;
+  subData.reserve(bounds.width * bounds.height);
+  for (int yi = 0 ; yi < bounds.height ; ++yi)
+    for (int xi = 0 ; xi < bounds.width ; ++xi)
+      subData.push_back() =
+          data[(xi + bounds.left) + xLen * (yi + bounds.top)];
+
+  return Grid<T>(bounds.width, bounds.height, subData);
+}
+
+// Returns a new Grid containing a subsection of this Grid.
+template<typename T>
+Grid<T> Grid<T>::subGrid (int x1, int y1, int x2, int y2) const
+{
+  // Check Parameters
+  if (!inRange(x1, y1, x2, y2)) throw std::out_of_range(outOfRangeSb);
+
+  int xs = x2 - x1;
+  int ys = y2 - y1;
+
+  Grid<T> fin(xs, ys);
+
+  for (int yi = 0 ; yi < ys ; ++yi)
+  {
+    for (int xi = 0 ; xi < xs ; ++xi)
+    {
+      fin.at(xi, yi) = this->at(x1 + xi, y1 + yi);
+    }
+  }
+  return fin;
+}
+
+// Returns a new Grid containing a mapped setion of this Grid.
+template<typename T>
+template<typename U>
+Grid<U> Grid<T>::subGrid (sf::IntRect const & bounds,
+                          U (*mapping)(T const &)) const
+{
+  // Check Parameters
+  if (!inRange(bounds)) throw std::out_of_range(outOfRangeSb);
+
+  // Constructed with the vector constructor
+  // (Although a lambda function getter might be faster.)
+  std::vector<U> subData;
+  subData.reserve(bounds.width * bounds.height);
+  for (int yi = 0 ; yi < bounds.height ; ++yi)
+    for (int xi = 0 ; xi < bounds.width ; ++xi)
+      subData.push_back() =
+          mapping(data[(xi + bounds.left) + xLen * (yi + bounds.top)]);
+
+  return Grid<U>(bounds.width, bounds.height, subData);
+}
+
+// Returns a new Grid containing a mapped setion of this Grid.
+template<typename T>
+template<typename U>
+Grid<U> Grid<T>::subGrid (int x1, int y1, int x2, int y2,
+                          U (*mapping)(T const &)) const
+{
+  // Check Parameters
+  if (!inRange(x1, y1, x2, y2)) throw std::out_of_range(outOfRangeSb);
+
+  int xs = x2 - x1;
+  int ys = y2 - y1;
+
+  Grid<U> fin(xs, ys);
+
+  for (int yi = 0 ; yi < ys ; ++yi)
+  {
+    for (int xi = 0 ; xi < xs ; ++xi)
+    {
+      fin.at(xi, yi) = mapping(this->at(x1 + xi, y1 + yi));
+    }
+  }
+  return fin;
+}
+
+// Return a new Grid containing a filled map of this grid.
+template<typename T>
+template<typename U>
+Grid<U> Grid<T>::subGrid (sf::IntRect const & bounds, U (*mapping)(T const &),
+                          U const & asNil) const
+{
+  // Check Parameters
+  if (!inRange(bounds)) throw std::out_of_range(outOfRangeSb);
+
+  // Set up the range variables.
+  int const dx = bounds.width;
+  int const dy = bounds.height;
+  int const xOff = bounds.left;
+  int const yOff = bounds.top;
+
+  // Use vector construction.
+  std::vector<U> subData;
+  subData.reserve(dx * dy);
+  for (int yi = 0 ; yi < dy ; ++yi)
+    for (int xi = 0 ; xi < dx ; ++xi)
+      subData.push_back() =
+          (0 <= xi + xOff && xi + xOff < xLen &&
+           0 <= yi + yOff && yi + yOff < yLen) ?
+          mapping(data[(xi + xOff) + xLen * (yi + yOff)])
+          : asNil;
+  return Grid<U>(dx, dy, subData);
+}
+
+// Return a new Grid containing a filled map of this grid.
+template<typename T>
+template<typename U>
+Grid<U> Grid<T>::subGrid (int x1, int y1, int x2, int y2,
+                          U (*mapping)(T const &),
+                          U const & asNil) const
+{
+  // Check Parameters
+  if (!(0 <= x1 && x1 < x2 && x2 <= xLen && 0 <= y1 && y1 < y2 && y2 <= yLen))
+    throw std::out_of_range(outOfRangeSb);
+
+  // Set up the range variables.
+  int const dx = x2 - x1;
+  int const dy = y2 - y1;
+  int const xOff = x1;
+  int const yOff = y1;
+
+  // Use vector construction.
+  std::vector<U> subData;
+  subData.reserve(dx * dy);
+  for (int yi = 0 ; yi < dy ; ++yi)
+    for (int xi = 0 ; xi < dx ; ++xi)
+      subData.push_back() =
+          (0 <= xi + xOff && xi + xOff < xLen &&
+           0 <= yi + yOff && yi + yOff < yLen) ?
+          mapping(data[(xi + xOff) + xLen * (yi + yOff)])
+          : asNil;
+  return Grid<U>(dx, dy, subData);
+}
+
+#endif//GRID_EPP

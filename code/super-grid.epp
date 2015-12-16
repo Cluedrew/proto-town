@@ -1,0 +1,140 @@
+#ifndef SUPER_GRID_EPP
+#define SUPER_GRID_EPP
+
+/* Implementation of the SuperGrid class.
+ * 
+ * I would like to take the opertunity to explain all of the variables.
+ * xLen & yLen: The size of the SuperGrid from the user's perspective.
+ * xPart & yPart: The size of each sub-grid within the SuperGrid.
+ * xSecs & ySecs: The number of sub-grids along each axis.
+ */
+
+#include <stdexcept>
+
+// Static Member Definition ==================================================
+template<typename T>
+std::string SuperGrid<T>::outOfRangeAt =
+    std::string("SuperGrid::at: out_of_range");
+template<typename T>
+std::string SuperGrid<T>::outOfRangeSb =
+    std::string("SuperGrid::subGrid: out_of_range");
+
+// Constructors and Deconstructor ==================================================
+// Create a SuperGrid with of a given size and with the parts of a given size.
+template<typename T>
+SuperGrid<T>::SuperGrid (int xTotal, int yTotal, int xPart, int yPart,
+                         T const & fill) :
+  xLen(xTotal), yLen(yTotal), xPart(xPart), yPart(yPart),
+  xSecs((xTotal / xPart) + ((xTotal % xPart != 0) ? 1 : 0)),
+  ySecs((yTotal / yPart) + ((yTotal % yPart != 0) ? 1 : 0)),
+  data(xSecs * ySecs, Grid<T>(xPart, yPart, fill))
+{}
+
+// Copy constructor
+template<typename T>
+SuperGrid<T>::SuperGrid (SuperGrid<T> const & other) :
+  xLen(other.xLen), yLen(other.yLen), xPart(other.xPart), yPart(other.yPart),
+  xSecs(other.xSecs), ySecs(other.ySecs), data(other.data)
+{}
+
+// Deconstructor
+template<typename T>
+SuperGrid<T>::~SuperGrid ()
+{}
+
+// Operator Overloads ==============================================================
+// Assignment operator
+template<typename T>
+SuperGrid<T> & SuperGrid<T>::operator= (SuperGrid<T> const & other)
+{
+  // checks
+  data = other.data;
+  return *this;
+}
+
+// Access Functions ================================================================
+// Return the size of the Grid in one of the two given axis. (x)
+template<typename T>
+int SuperGrid<T>::xSize() const
+{
+  return xLen;
+}
+
+// Return the size of the Grid in one of the two given axis. (y)
+template<typename T>
+int SuperGrid<T>::ySize() const
+{
+  return yLen;
+}
+
+// Returns a reference to the element at possition (x,y).
+template<typename T>
+T & SuperGrid<T>::at (int x, int y)
+{
+  if (x < 0 || xLen <= x || y < 0 || yLen <= y)
+    throw std::out_of_range(outOfRangeAt);
+  return data[(x / xPart) + xSecs * (y / yPart)]
+    .data[(x % xPart) + xPart * (y % yPart)];
+}
+
+// Returns a reference to the element at possition (x,y).
+template<typename T>
+T const & SuperGrid<T>::at (int x, int y) const
+{
+  if (x < 0 || xLen <= x || y < 0 || yLen <= y)
+    throw std::out_of_range(outOfRangeAt);
+  return data[(x / xPart) + xSecs * (y / yPart)]
+    .data[(x % xPart) + xPart * (y % yPart)];
+}
+
+// Returns a new Grid containing a subsection of this Grid.
+template<typename T>
+Grid<T> SuperGrid<T>::subGrid (int x1, int y1, int x2, int y2) const
+{
+  // Check Parameters
+  if (!(0 <= x1 && x1 < x2 && x2 <= xLen && 0 <= y1 && y1 < y2 && y2 <= yLen))
+    throw std::out_of_range(outOfRangeSb);
+  
+  int xs = x2 - x1;
+  int ys = y2 - y1;
+  
+  Grid<T> fin(xs, ys);
+  
+  for (int yi = 0 ; yi < ys ; ++yi)
+  {
+    for (int xi = 0 ; xi < xs ; ++xi)
+    {
+      fin.at(xi, yi) = this->at(x1 + xi, y1 + yi);
+    }
+  }
+  
+  return fin;
+}
+
+// Returns a new Grid containing a mapped setion of this Grid.
+template<typename T>
+template<typename U>
+Grid<U> SuperGrid<T>::subGrid (int x1, int y1, int x2, int y2,
+                               U (*)(T const & mapping)) const
+{
+  // Check Parameters
+  if (!(0 <= x1 && x1 < x2 && x2 <= xLen && 0 <= y1 && y1 < y2 && y2 <= yLen))
+    throw std::out_of_range(outOfRangeSb);
+  
+  int xs = x2 - x1;
+  int ys = y2 - y1;
+  
+  Grid<U> fin(xs, ys);
+  
+  for (int yi = 0 ; yi < ys ; ++yi)
+  {
+    for (int xi = 0 ; xi < xs ; ++xi)
+    {
+      fin.at(xi, yi) = mapping(this->at(x1 + xi, y1 + yi));
+    }
+  }
+  
+  return fin;
+}
+
+#endif//SUPER_GRID_EPP
