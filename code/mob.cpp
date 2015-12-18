@@ -8,7 +8,7 @@
 #include "image-def.hpp"
 #include "part-ai.hpp"
 #include "player-ai.hpp"
-#include "physics.hpp"
+#include "physics-n.hpp"
 
 // Constructors and Deconstructor ============================================
 Mob::Mob (ImageLib const & imgLib, MobID id, unsigned int x, unsigned int y) :

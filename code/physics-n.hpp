@@ -1,9 +1,15 @@
-#ifndef PHYSICS_HPP
-#define PHYSICS_HPP
+#ifndef PHYSICS_N_HPP
+#define PHYSICS_N_HPP
 
 /* Pure static class that encapsulates the physics (kinamatics and collitions)
  * calculations for objects in the game world. Data for the physics of a class
- * X is encapsulated in the PhysicsX structure.
+ * X is encapsulated in the PhysicsX structure. Implemented by the numbered
+ * physics files.
+ *
+ * The physics of this game works like this:
+ * Tiles are locked in place and stored in the map. Although they can change
+ * they don't move around. Mobs can move around and collide with tiles in the
+ * map, for now they don't collide with each other to simplify calculations.
  *
  * Formally Collider. Currently it has no state.
  */
@@ -40,4 +46,4 @@ private:
       (PhysicsMob const &, sf::Time const &, Map const &);
 };
 
-#endif//PHYSICS_HPP
+#endif//PHYSICS_N_HPP

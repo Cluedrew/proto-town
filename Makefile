@@ -11,13 +11,13 @@
 USE_DEBUG=
 
 # Name of binary executable.
-EXEC=proto-town
+EXE=proto-town
 
 # The base name of every code file used to create the binary.
 FILENAMES=main loop-clock event-queue event-pass \
 	map image-lib tile \
 	mob mob-collect part-ai player-ai \
-	physics physics-2
+	physics-1 physics-2
 
 # C++ Compiler
 CXX=g++
@@ -43,10 +43,10 @@ CXXFLAGS+=${if ${USE_DEBUG},${DEBUG},}
 
 ### Recipes and Rules
 
-all : ${EXEC}
+all : ${EXE}
 
 # Rule for the binary
-${EXEC} : ${OBJFILES}
+${EXE} : ${OBJFILES}
 	${CXX} ${CXXFLAGS} ${CXXLIBS} $^ -o $@
 
 # Rule for object files
@@ -65,11 +65,11 @@ clean :
 
 # Phony rule for cleaning generated files
 deepclean : clean
-	-rm ${EXEC}
+	-rm ${EXE}
 
 # Phony rule for running the test wrapper
-test : ${EXEC}
-	gdb ./${EXEC}
+test : ${EXE}
+	gdb ./${EXE}
 
 ### Include Depends Files
 

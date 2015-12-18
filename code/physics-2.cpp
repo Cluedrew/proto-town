@@ -1,4 +1,4 @@
-#include "physics.hpp"
+#include "physics-2.hpp"
 
 /* This file implements all of the 'internal' aspects of the Physics class.
  * Because they are not to be used externally and have no header documentation
@@ -10,7 +10,8 @@
  * up.
  *
  * These functions are the ones that do most of the number crunching, they
- * don't interact with other parts of the system in any real way.
+ * don't interact with other parts of the system in any real way. Could have
+ * gotten away with one file but two seems nice.
  */
 
 //sf::FloatRect Physics::getColliderPos (PhysicsMob const & cData);
@@ -36,12 +37,7 @@
 #include "physics-mob.hpp"
 #include "physics-tile.hpp"
 
-// Local helper functions for collider =======================================
-//static sf::FloatRect Physics::getColliderPos (PhysicsMob const & cData)
-//{
-//  return sf::FloatRect(cData.x, cData.y, cData.w, cData.h);
-//}
-
+// Calculate a single Mob's movement across the Map.
 PhysicsMob Physics::singleEntityWithWorldCore
   (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
 {

@@ -33,10 +33,10 @@ struct PhysicsMob
     dx(velocity.x), dy(velocity.y), ddx(acceleration.x), ddy(acceleration.y)
   {}
 
-  // The xy location of the entity's upper left corner.
+  // The xy location of the entity's upper left corner. (pixels)
   float x;
   float y;
-  // The width and height of the entity.
+  // The width and height of the entity. (pixels)
   float w;
   float h;
   // The entity's x and y velocity. (pixels/second)
@@ -49,6 +49,7 @@ struct PhysicsMob
   // Is a given side of the entity touching a solid?
   // EXPERAMENTAL
   //enum Side {Left, Top, Right, Bottem};
+  //+ Conners TopLeft, TopRight, BottemLeft, BottemRight
   //bool contact[4];
 
   GET_SET(Position,x,y)
