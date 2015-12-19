@@ -52,6 +52,8 @@ public:
 
   int getMapWidth () const { return tiles.xSize(); }
   int getMapHeight () const { return tiles.ySize(); }
+  int width () const { return tiles.xSize(); }
+  int height () const { return tiles.ySize(); }
   /* Get the width or height of the map in tiles.
    * Return: An integer returning the map's width or height. These are
    *   one larger than the maximum coordinate in that axis.

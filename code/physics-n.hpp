@@ -3,8 +3,14 @@
 
 /* Pure static class that encapsulates the physics (kinamatics and collitions)
  * calculations for objects in the game world. Data for the physics of a class
- * X is encapsulated in the PhysicsX structure. Implemented by the numbered
- * physics files.
+ * X is encapsulated in the PhysicsX structure.
+ *
+ * Implemented by the numbered physics files. Which may be excessive but it
+ * this is my first time writing this complex of physics anything so it helps
+ * me sort it out in my head.
+ * 1: Public Functions, dispatchers for the other files.
+ * 2: Some of the really big calculation functions.
+ * 3: Small helper calculator functions.
  *
  * The physics of this game works like this:
  * Tiles are locked in place and stored in the map. Although they can change

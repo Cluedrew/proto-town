@@ -7,24 +7,12 @@
 
 #include <iostream>
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Rect.hpp>
+//#include <SFML/System/Vector2.hpp>
+//#include <SFML/Graphics/Rect.hpp>
 #include "mob.hpp"
-#include "map.hpp"
-#include "grid.hpp"
+//#include "map.hpp"
+//#include "grid.hpp"
 #include "physics-mob.hpp"
-
-// Updates the PhysicsMob for a given amount of time.
-PhysicsMob Physics::incPhysicsMob (PhysicsMob const & physM,
-                                   sf::Time const & time)
-{
-  float dt = time.asSeconds();
-  return PhysicsMob(physM.x + physM.dx * dt + 0.5f * physM.ddx * dt * dt,
-                    physM.y + physM.dy * dt + 0.5f * physM.ddy * dt * dt,
-                    physM.w,       physM.h,
-                    physM.dx * dt, physM.dy * dt,
-                    physM.ddx,     physM.ddy);
-}
 
 // singleEntityWithWorld =====================================================
 // Calculate a single Mob's movement across the Map.
@@ -34,3 +22,24 @@ PhysicsMob Physics::singleEntityWithWorld
   // This will later break large movements into even smaller increments.
   return singleEntityWithWorldCore(mob.getPhysics(), fr, map);
 }
+
+/* Possible wrapper for the map, that only has physics information.
+class PhysicsMap
+{
+private:
+  Map const & map;
+protected:
+public:
+  PhysicsMap (Map const & map) :
+      map(map)
+  {}
+
+  PhysicsTile const & at (int x, int y)
+  {
+    if (0 <= x && x < map.width() && 0 <= y && y < map.height())
+      return map.at(x,y).getPhysics();
+    else
+      return voidPhysicsTile;
+  }
+}
+*/

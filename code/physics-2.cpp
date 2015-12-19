@@ -14,13 +14,6 @@
  * gotten away with one file but two seems nice.
  */
 
-//sf::FloatRect Physics::getColliderPos (PhysicsMob const & cData);
-/* Get the the currant position & size of a Mob's body.
- * Params: A constant reference to a PhysicsMob.
- * Return: A rect giving the upper left corner and the size of the Mob
- *   as it is now.
- */
-
 //PhysicsMob Physics::singleEntityWithWorldCore
 //  (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
 /* Increment a Mob's movement across the Map over Time.
@@ -50,10 +43,12 @@ PhysicsMob Physics::singleEntityWithWorldCore
   bool collides = false;
   {
     sf::IntRect dest = map.pixelToTileBounds(newState.getBody());
+    // Does this take us out of the map?
     if (dest.top < 0 && dest.left < 0 &&
         dest.top + dest.height >= map.getMapHeight() &&
         dest.left + dest.width >= map.getMapWidth())
       collides = true;
+    // Or into any impassible tiles?
     else
       for (int yi = dest.top ; yi < dest.top + dest.height ; ++yi)
         for (int xi = dest.left ; xi < dest.left + dest.width ; ++xi)
@@ -65,4 +60,12 @@ PhysicsMob Physics::singleEntityWithWorldCore
   return (collides) ? PhysicsMob(physM.x, physM.y, physM.w,
                                  physM.h, 0, 0, 0, 0)
                     : newState;
+}
+
+// Find the next crittical time.
+sf::Time Physics::singleEntityNextCriticalTime
+  (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
+{
+  // Assume no critical times happen besides the end of the mob's movement.
+  return deltaT;
 }
