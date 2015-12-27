@@ -47,9 +47,21 @@ struct Physics
    */
   //static PhysicsTile voidTilePhysics;
 private:
-  // Helper functions
+  // Helper Functions
+  // Please Ignore unless you are intrested in the implementation.
+
   static PhysicsMob singleEntityWithWorldCore
       (PhysicsMob const &, sf::Time const &, Map const &);
+  /* Increment a Mob's movement across the Map over Time.
+   *   Note that this is for very small, 'safe' amounts of movement.
+   * Params:
+   * Return:
+   */
+
+  static sf::Time Physics::singleEntityNextCriticalTime
+      (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
+  /* Find the next critical time.
+   */
 };
 
 #endif//PHYSICS_N_HPP

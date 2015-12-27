@@ -1,30 +1,8 @@
-#include "physics-2.hpp"
+#include "physics-n.hpp"
 
-/* This file implements all of the 'internal' aspects of the Physics class.
- * Because they are not to be used externally and have no header documentation
- * there is a mini-header here you can look at.
- *
- * Most things here are only to be used as helper functions for something in
- * physics.cpp, the only reason it is in the header at all is A) it is good
- * form and B) makes it easier to change if some exception to the rule comes
- * up.
- *
- * These functions are the ones that do most of the number crunching, they
- * don't interact with other parts of the system in any real way. Could have
- * gotten away with one file but two seems nice.
+/* This is for some of the bulky calculations.
+ * Usually very simple purposes, but really complicated math behind it.
  */
-
-//PhysicsMob Physics::singleEntityWithWorldCore
-//  (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
-/* Increment a Mob's movement across the Map over Time.
- *   Note that this is for very small, 'safe' amounts of movement.
- * Params:
- * Return:
- */
-
-// ===========================================================================
-// Implementation ============================================================
-// ===========================================================================
 
 #include "map.hpp"
 #include "physics-mob.hpp"
@@ -62,10 +40,76 @@ PhysicsMob Physics::singleEntityWithWorldCore
                     : newState;
 }
 
-// Find the next crittical time.
+// Find the next critical time.
 sf::Time Physics::singleEntityNextCriticalTime
   (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
 {
   // Assume no critical times happen besides the end of the mob's movement.
+  // TODO: Have a proper solution that checks mid points.
   return deltaT;
 }
+
+// Contact class, a wrapper for the bit set that repersents the sides of
+// a mob. Seems to be a bit much but it works.
+#include <bitset>
+class Contact
+{
+public:
+  enum Side
+  {
+    Top,
+    TopRight,
+    Right,
+    BottomRight,
+    Bottom,
+    BottomLeft,
+    Left,
+    TopLeft
+  };
+private:
+  std::bitset<8> sides;
+protected:
+public:
+  Contact();
+  virtual ~Contact();
+
+  void set (Side side, bool to)
+  { sides.set(side); }
+
+  bitset::reference operator[] (Side side)
+  { return sides[side]; }
+  bool operator[] (Side side) const
+  { return sides[side]; }
+
+  bool hasContact(Side s);
+  bool isOnGround();
+
+  template<typename T>
+  std::vector<T> forEachSide (T (*each)(std::pair<Side,bool>))
+  {
+    Side currentSide = Top;
+    std::vector data;
+    while(true)
+    {
+      data.push_back(each(std::make_pair(currentSide,sides.test(currentSide)));
+      if (TopLeft = currentSide)
+        break;
+      ++currentSide;
+    }
+  }
+
+  void forEachSide (void (*each)(std::pair<Side,bool>))
+  {
+    Side currentSide = Top;
+    while(true)
+    {
+      each(std::make_pair(currentSide,sides.test(currentSide));
+      if (TopLeft = currentSide)
+        break;
+      ++currentSide;
+    }
+  }
+};
+
+Contact Physics::updateContact (PhysicsMob const & phyM, Map const & map)
+{}
