@@ -26,6 +26,16 @@ class Mob;
 class Map;
 class PhysicsMob;
 
+// Stucture that has the data for accelerating towards a velocity.
+struct AccelRequest
+{
+  AccelRequest () : targetVelocity(), maxIncrease(), maxDecrease() {}
+
+  unsigned int targetVelocity;
+  unsigned int maxIncrease;
+  unsigned int maxDecrease;
+}
+
 struct Physics
 {
   static PhysicsMob singleEntityWithWorld
