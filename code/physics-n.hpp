@@ -20,21 +20,11 @@
  * Formally Collider. Currently it has no state.
  */
 
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Time.hpp>
 class Mob;
 class Map;
 class PhysicsMob;
-
-// Stucture that has the data for accelerating towards a velocity.
-struct AccelRequest
-{
-  AccelRequest () : targetVelocity(), maxIncrease(), maxDecrease() {}
-
-  unsigned int targetVelocity;
-  unsigned int maxIncrease;
-  unsigned int maxDecrease;
-}
+class PhysicsMap;
 
 struct Physics
 {
@@ -52,10 +42,50 @@ struct Physics
   /*
    */
 
-  //static PhysicsTile const & getTilePhysics (Map const &, int x, int y);
-  /*
+  // Stucture that has the data for accelerating towards a velocity.
+  struct AccelRequest
+  {
+    AccelRequest (float tv, float maxIn, float maxDe) :
+      targetVelocity(tv), maxIncrease(maxIn), maxDecrease(maxDe)
+    {}
+    /* Define an accelation request.
+     * Params: All messurments are directionless and should be possitive.
+     */
+
+    float targetVelocity;
+    // The velocity that the acceration should bring the object closer to.
+
+    float maxIncrease;
+    // The max increase in velocity (upper bound on acceleration).
+
+    float maxDecrease;
+    // The max decrease in velocity (lower bound on acceleration).
+  }
+  /* This structure is used as an argument in several functions that create
+   * smooth acceleration. Generally creating a constant for a type of movement
+   * and passing a reference to it should work fine.
+   *
+   * targetVelocity is the speed (that is the magnatude) that the object would
+   * like to move at. maxIncrease & maxDecrease are the highest and lowest
+   * accelerations it will undergo. Most of the time one of these will be
+   * the acceleration, except when the currant speed is really close to the
+   * target speed, where it will be in the middle so that the target is
+   * reached at the end of the frame.
+   *
+   * Time and direction data comes from the particular function.
    */
-  //static PhysicsTile voidTilePhysics;
+
+  static float AccelTowardsRight
+      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
+  static float AccelTowardsLeft
+      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
+  static float AccelTowardsDown
+      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
+  static float AccelTowardsUp
+      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
+  /* Accel* function calculate smooth acceleration. WIP
+   */
+
 private:
   // Helper Functions
   // Please Ignore unless you are intrested in the implementation.
@@ -72,6 +102,9 @@ private:
       (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
   /* Find the next critical time.
    */
+
+  static float AccelTowardsAxis
+      (float, sf::Time const &, AccelRequest const &);
 };
 
 #endif//PHYSICS_N_HPP
