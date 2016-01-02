@@ -35,13 +35,13 @@ public:
   LoopClock ();
   /* Construct a LoopClock with an increment of 0 time passed.
    */
-  
+
   virtual ~LoopClock ();
-  
+
   void wait () const;
   /* Wait for the rest of the time increment to pass.
    */
-  
+
   void setIncrement (sf::Time const &);
   void setIncrement (unsigned int ips);
   /* Reset the LoopClock's increment.
@@ -50,7 +50,7 @@ public:
    *   increment remains unchanged and the currant increment will be
    *   messured from there.
    */
-  
+
   sf::Time const & getIncrement () const;
   /* Get the amount of time per increment of the LoopClock.
    * Return: A constaint reference to the LoopClock's time increment.

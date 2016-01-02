@@ -60,7 +60,7 @@ struct Physics
 
     float maxDecrease;
     // The max decrease in velocity (lower bound on acceleration).
-  }
+  };
   /* This structure is used as an argument in several functions that create
    * smooth acceleration. Generally creating a constant for a type of movement
    * and passing a reference to it should work fine.
@@ -75,13 +75,13 @@ struct Physics
    * Time and direction data comes from the particular function.
    */
 
-  static float AccelTowardsRight
+  static float accelTowardsRight
       (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float AccelTowardsLeft
+  static float accelTowardsLeft
       (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float AccelTowardsDown
+  static float accelTowardsDown
       (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float AccelTowardsUp
+  static float accelTowardsUp
       (PhysicsMob const &, sf::Time const &, AccelRequest const &);
   /* Accel* function calculate smooth acceleration. WIP
    */
@@ -98,13 +98,29 @@ private:
    * Return:
    */
 
-  static sf::Time Physics::singleEntityNextCriticalTime
+  static sf::Time singleEntityNextCriticalTime
       (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
   /* Find the next critical time.
    */
 
-  static float AccelTowardsAxis
-      (float, sf::Time const &, AccelRequest const &);
+  static float accelTowardsAxis
+      (float dv, sf::Time const & deltaT, AccelRequest request);
+  /* Return acceleration along an axis.
+   * Params:
+   *   dz: Current velocity along axis.
+   *   ddz: Current acceleration along axis.
+   *   deltaT: Change in time.
+   *   request: Signed request for change in acceleration.
+   * Return: The new acceleration along the axis.
+   */
 };
+
+template<typename T>
+T medianOfThree (T val1, T val2, T val3);
+/* Return the midian of the three provided values.
+ * Requires bool operator< (T, T) to be defined.
+ * Params: Three values of a type that is orderable by operator<.
+ * Return: One of the three values, the middle one in ordering.
+ */
 
 #endif//PHYSICS_N_HPP

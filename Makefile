@@ -17,7 +17,7 @@ EXE=proto-town
 FILENAMES=main loop-clock event-queue event-pass \
 	map image-lib tile \
 	mob mob-collect part-ai player-ai \
-	physics-1 physics-2
+	physics-1 physics-2 physics-3
 
 # C++ Compiler
 CXX=g++

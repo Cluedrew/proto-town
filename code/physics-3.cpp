@@ -73,21 +73,29 @@ sf::Time Physics::timeToMove (PhysicsMob const & physM,
   }
 }
 
-/* Possible wrapper for the map, that only has physics information.
-struct PhysicsMap
+// Return acceleration along an axis.
+float Physics::accelTowardsAxis
+    (float dv, sf::Time const & deltaT, AccelRequest request)
 {
-  Map const & map;
+  // Get the acceleration to arrive at the target velocity.
+  float accelToTarget = (request.targetVelocity - dz) / deltaT;
 
-  PhysicsMap (Map const & map) :
-      map(map)
-  {}
-
-  PhysicsTile const & at (int x, int y)
-  {
-    if (0 <= x && x < map.width() && 0 <= y && y < map.height())
-      return map.at(x,y).getPhysics();
-    else
-      return voidPhysicsTile;
-  }
+  // Get the center of the three (so the maxes act as limits).
+  return medianOfThree<float>
+      (request.maxIncrease,
+       accleToTarget,
+       request.maxDecrease);
 }
-*/
+
+// Return the midian of the three provided values.
+// Requires bool operator< (T, T) to be defined.
+template<typename T>
+T medianOfThree (T num1, T num2, T num3)
+{
+  return (num1 < num2)
+      ? ((num2 < num3) ? num2 :
+        ((num1 < num3) ? num1 : num3))
+
+      : ((num1 < num3) ? num1 :
+        ((num2 < num3) ? num2 : num3))
+}
