@@ -27,6 +27,8 @@ class PartAI
 private:
   // Disable copy assignment and copy constructor?
 protected:
+  // Subclass Sandbox:
+
   // Mob setters. Now with floats.
   void moveMob (Mob &, float x, float y);
   //void moveMobTo (Mob &, int x, int y);

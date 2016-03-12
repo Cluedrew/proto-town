@@ -1,0 +1,94 @@
+OK, I need an overview of the entire project.
+
+I've been away from it and parts of it just don't make sense any more. So I'm
+going to figure it out again and hopefully impove the design a bit at the same
+time.
+
+Here is a describtion of each part of the program. As well as the modules that
+implement each one. Note that they are not always completely seperate, they
+may interlock or cut across each other.
+
+
+Main Loop: main, loop-clock
+  The main function orginizes the five man stages and allocates most of the
+memory used throughout the program. LoopClock is just a class that controls
+how fast the loop spins on by, a frame rate limiter.
+  Loop goes like this: setup > [ input > update > render ] > cleanup. Of these
+sections update & render are almost completely outsourced to other parts of
+the program. Similarly setup and cleanup are simply prepare and close down
+other classes and parts of the program.
+
+
+Input (events): main, event-pass, event-queue, player-event
+  Input is gathered as part of the main loop, it is partially sorted here in
+that the types of input we don't care about are stripped off and things that
+control the main exicution of the game are handled in place.
+  The rest goes to event-pass which sorts out the remaining input and passes
+it to the correct target. It also has the loop-up for keys to inputs for
+re-binding controls.
+  The EventQueue holds onto events until something that can handle them comes
+along, currently there is a single instance for the PlayerEvents, which the
+player mob handles.
+
+CHANGES: input-handler, game-event
+  First, it is too spead out, the logic of what input does is spead over three
+layers (main, event-pass and whatever scans the event-queue). To make it worse
+they don't have distinct roles. I think I can get it to 2.
+  The first is just the general input-handler, it gathers all the input and
+translates it from SFML events to a new event class for the game. It also
+does some of the distributing work. In other words it combines most of the
+event handler in the main loop with event-pass.
+  Then there is a buffer, that holds any input that does not require an
+imediate responce (probably a queue) until update happens. The second layer
+is everything that happens there.
+
+
+Update: mob-collect, mob, part-ai (+subclasses: player-ai)
+  Update the game state taking into account the change in time and any new
+inputs. This is accomplished through MobCollect::update which calls all the
+Mob::update functions which do all the standard steps as well as calling the
+mob's part-ai for and special stuff.
+  Mob is a collection of parts (although currently only one, part-ai, exists)
+although it is not an hollow container as I expect mobs to be seeing very
+little veration.
+
+
+Render: map, tile, mob-collect, mob, image-def, image-lib
+  Or just the output stage, as the visual rendering is the only output in the
+game so far. This is handled by every visual thing in the game being a
+sf::Drawable class, as are there containers which draw all of them.
+  The image-def and image-lib contain tools for the actual loading of images.
+Mobs and Tiles each have there own set of rules by which their images are
+created, stored and drawn and these implement them.
+
+
+Physics: physics-*, contact, part-ai
+  All classes with physics in their name are connected directly to the
+physics engine. The physics engine is quite simple, Mobs move and are
+rectangles, tiles stay in place (and may be more exotic eventally). Mobs
+and Tiles bump into each other, but Mobs don't touch other mobs. Eventally
+things like progectiles or some area of interaction should be added so
+Mobs/the player have some influence over the world around them.
+  Most of the physics engine is dedicated to simple kniamatics, jumping with
+arks, speeding up and slowing down and so on, and collition detection, mob
+with tile not even the other way around. Those things in the game that
+interact with the physics engine have a physics component class that the
+related data is stored in.
+  Contact is a subsection of the PhysicsMob that is supposed to track if the
+mob is touching anything. PartAI has some wrapper functions for PhysicsMob,
+so the ai can move the Mob.
+  PhysicsMap is a sort of getter for PhysicsTiles and it adds in a null result
+that is returned when we go out of range. The physics of the void beyond the
+edge of the map.
+
+CHANGES:
+  OK, the main Physics class has to be cleaned up a lot.
+  Some of its work may be outsourced to PartAI, or something in the chain
+between the children of PartAI and Physics, as a sort of wrapper. It should
+be relatively easy to code movement in the ai classes.
+
+
+Map System: map, grid, ~ super-grid, tile, physics-map, physics-tile
+
+
+Mob System: mob, mob-collect, part-ai, physics-mob

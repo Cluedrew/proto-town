@@ -35,11 +35,13 @@ struct Physics
    *   foward by and a reference to the Map repersenting the world.
    * Return: A PhysicsMob showing the new state of the entity after the
    *   given time has passed.
-   * TODO: Add suport for the contact array.
    */
 
   static PhysicsMob incPhysicsMob (PhysicsMob const &, sf::Time const &);
-  /*
+  /* Move a PhysicsMob forward in time assuming no colitions.
+   * Params: The PhysicsMob to increment and the amount of time to move it
+   *   forward by.
+   * Return: A new PhysicsMob with possition and velocity updated.
    */
 
   // Stucture that has the data for accelerating towards a velocity.
@@ -86,6 +88,15 @@ struct Physics
   /* Accel* function calculate smooth acceleration. WIP
    */
 
+  static void updateMobContact (PhysicsMob &, Map const &);
+  // Modifer version?
+
+  static Contact newMobContact (PhysicsMob const &, Map const &);
+  /*
+   * Params: The PhysicsMob to get the Contact for and the Map it contacts.
+   * Return: A new Contact object.
+   */
+
 private:
   // Helper Functions
   // Please Ignore unless you are intrested in the implementation.
@@ -101,6 +112,8 @@ private:
   static sf::Time singleEntityNextCriticalTime
       (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map);
   /* Find the next critical time.
+   * Params:
+   * Return:
    */
 
   static float accelTowardsAxis
@@ -108,7 +121,6 @@ private:
   /* Return acceleration along an axis.
    * Params:
    *   dz: Current velocity along axis.
-   *   ddz: Current acceleration along axis.
    *   deltaT: Change in time.
    *   request: Signed request for change in acceleration.
    * Return: The new acceleration along the axis.
