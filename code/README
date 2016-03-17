@@ -30,7 +30,7 @@ re-binding controls.
 along, currently there is a single instance for the PlayerEvents, which the
 player mob handles.
 
-CHANGES: input-handler, game-event
+CHANGES: input-handler, input-event
   First, it is too spead out, the logic of what input does is spead over three
 layers (main, event-pass and whatever scans the event-queue). To make it worse
 they don't have distinct roles. I think I can get it to 2.
@@ -81,7 +81,7 @@ so the ai can move the Mob.
 that is returned when we go out of range. The physics of the void beyond the
 edge of the map.
 
-CHANGES:
+CHANGES: physics
   OK, the main Physics class has to be cleaned up a lot.
   Some of its work may be outsourced to PartAI, or something in the chain
 between the children of PartAI and Physics, as a sort of wrapper. It should
@@ -89,6 +89,25 @@ be relatively easy to code movement in the ai classes.
 
 
 Map System: map, grid, ~ super-grid, tile, physics-map, physics-tile
+  There is a map which is a grip (2d container I made) of Tiles. The Map does
+most of the handling for Tiles. The Map distributes draw commands and is also
+passed around instead of the Tiles themeselves most of the time.
+  The Tiles themselves are (currently) just an image tied to a physics-tile,
+which contains all of the information needed  to determain colitions with
+Tiles. Actually it does't contain location information, but are instead
+reteved by location.
 
 
 Mob System: mob, mob-collect, part-ai, physics-mob
+  Mobs are your generic moving thing on the map. Although they aren't actually
+very generic in some respects. Their phyiscal size for one is locked until
+a more general.
+  The orginization system for mobs is quite simple, all mobs go in the
+MobCollect which distributes update and draw commands to them. It is also
+a bit of a factory for the Mobs, although creating them is really simple.
+  Mobs are seperated by an enumeration called MobID, which is used select
+the image and the components (currently just the PartAI).
+
+CHANGES:
+  Nothing urgent is required, although some way to send messages to particular
+Mobs might be nice.
