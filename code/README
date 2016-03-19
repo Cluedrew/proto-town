@@ -42,6 +42,10 @@ event handler in the main loop with event-pass.
 imediate responce (probably a queue) until update happens. The second layer
 is everything that happens there.
 
+  So I started writing the InputEvent class and without even thinking about
+it I folded the translation feature of the InputHandler into it. Still
+wondering if that is a good idea or not.
+
 
 Update: mob-collect, mob, part-ai (+subclasses: player-ai)
   Update the game state taking into account the change in time and any new
