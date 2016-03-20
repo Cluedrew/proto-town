@@ -34,17 +34,15 @@ CHANGES: input-handler, input-event
   First, it is too spead out, the logic of what input does is spead over three
 layers (main, event-pass and whatever scans the event-queue). To make it worse
 they don't have distinct roles. I think I can get it to 2.
-  The first is just the general input-handler, it gathers all the input and
-translates it from SFML events to a new event class for the game. It also
-does some of the distributing work. In other words it combines most of the
-event handler in the main loop with event-pass.
+  InputEvent is just data. Does nothing other than know what it is.
+  InputHandler on the other hand takes the events from window.pollEvent and
+translates them into InputEvents. This includes control settings and some bits
+of game state. (None of which are in the game yet.) These events are then
+handled in the event loop. This first layer handles things that effect the
+larger game state.
   Then there is a buffer, that holds any input that does not require an
 imediate responce (probably a queue) until update happens. The second layer
 is everything that happens there.
-
-  So I started writing the InputEvent class and without even thinking about
-it I folded the translation feature of the InputHandler into it. Still
-wondering if that is a good idea or not.
 
 
 Update: mob-collect, mob, part-ai (+subclasses: player-ai)

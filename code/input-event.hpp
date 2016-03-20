@@ -9,9 +9,8 @@
 
 #include <SFML/Window/Event.hpp>
 
-class InputEvent
+struct InputEvent
 {
-public:
   // Enumeration of all the types of events that the InputEvent can repersent.
   enum TypeValue
   {
@@ -32,30 +31,14 @@ public:
     // Non-Event, inputs that we don't care about are translated to this.
     Ignored
   };
-private:
+
+
   TypeValue type;
 
-  void controlsLookUp(sf::Event const &);
+  // Later this will be a rather complex union to save space.
+  // For player events, was it a press or a release?
+  bool buttonPressed;
 
-protected:
-public:
-  InputEvent (TypeValue type = Ignored);
-  /* Constructor
-   */
-
-  virtual ~InputEvent ();
-
-  void lookUp(sf::Event const &);
-  /* Look-Up the given SFML event and set this InputEvent to its mapped value.
-   *   Note that the lookUp is not stable, it includes all control mappings
-   *   and other bits of state.
-   * Params: Constant reference to an initialized SFML event.
-   * Effect: Changes this class to the lookUp
-   */
-
-  TypeValue getType () const;
-  /* Get the type of this event.
-   */
 
   bool isImmediate () const;
   /* Does this event have to be handled immediatly (by main)?
