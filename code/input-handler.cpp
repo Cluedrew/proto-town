@@ -2,8 +2,7 @@
 
 
 // Constructors and Deconstructor:
-InputHandler::InputHandler ()
-{}
+//InputHandler::InputHandler () :{}
 
 InputHandler::~InputHandler ()
 {}
@@ -11,43 +10,39 @@ InputHandler::~InputHandler ()
 
 // Implementation Functions:
 
-/* Given a key press
- */
-/* controlsLookUp(event)
+/* controlsLookUp(event, ievent)
  * Handles KeyPressed and KeyReleased events, mapping them by the current
- * control scheme.
+ *   control scheme.
  * Params: Constant reference to an initialized SFML KeyPressed/KeyReleased
  *   event.
- * Return: A new InputEvent.
+ * Effect: Mutates ievent.
  *
  * Note: This is a temperary placeholder for a more robust system that allows
  *   for control mapping. It will probably be a key->button translation, from
  *   physical to purpose, and so have a slightly different interface, but
  *   this is close enough for now.
  */
-static InputEvent controlsLookUp(sf::Event const & event)
+static void controlsLookUp(sf::Event const & event, InputEvent ievent)
 {
-  InputEvent ievent;
-
   switch (event.key.code)
   {
   case sf::Keyboard::Left:
-    ievent.type = PlayerLeft;
+    ievent.type = InputEvent::PlayerLeft;
     break;
   case sf::Keyboard::Right:
-    ievent.type = PlayerRight;
+    ievent.type = InputEvent::PlayerRight;
     break;
   case sf::Keyboard::Up:
-    ievent.type = PlayerUp;
+    ievent.type = InputEvent::PlayerUp;
     break;
   case sf::Keyboard::Down:
-    ievent.type = PlayerDown;
+    ievent.type = InputEvent::PlayerDown;
     break;
   case sf::Keyboard::Space:
-    ievent.type = PlayerAction;
+    ievent.type = InputEvent::PlayerAction;
     break;
   default:
-    ievent.type = Ignored;
+    ievent.type = InputEvent::Ignored;
     return;
   }
 
@@ -55,17 +50,16 @@ static InputEvent controlsLookUp(sf::Event const & event)
     ievent.buttonPressed = true;
   else
     ievent.buttonPressed = false;
-
-  return ievent;
 }
 
 
-InputEvent InputHandler::eventTranslate (sf::Event const & event)
+void InputHandler::eventTranslate (sf::Event const & event, Input & ievent)
 {
   switch (event.type)
   {
   case sf::Event::Closed:
-    return InputEvent{InputEvent::TypeValue::Quit, false};
+    ievent.type = InputEvent::Quit;
+    break;
   case sf::Event::KeyPressed:
   case sf::Event::KeyReleased:
     //if (consolUp)
@@ -73,7 +67,7 @@ InputEvent InputHandler::eventTranslate (sf::Event const & event)
     //else
       // Temperary, although it might be a while before we get
       // a proper system for the controls.
-      return controlslookUp(event);
+      controlslookUp(event, ievent);
     //
     break;
   case sf::Event::TextEntered:
@@ -81,10 +75,32 @@ InputEvent InputHandler::eventTranslate (sf::Event const & event)
     //{}
     //else
     //{
-      return InputEvent{InputEvent::TypeValue::Ignored, false};
+      ievent.type = InputEvent::Ignored;
     //}
-    //break;
+    break;
   default:
-    return InputEvent{InputEvent::TypeValue::Ignored, false};
+    ievent.type = InputEvent::Ignored;
+    break;
   }
+}
+
+
+InputEvent InputHandler::eventTranslate (sf::Event const & event) const
+{
+  InputEvent ievent;
+  eventTranslate(event, ievent);
+  return ievent;
+}
+
+
+bool InputHandler::pollEventFrom (sf::Window & win, InputEvent & ie) const
+{
+  sf::Event sfEvent;
+  while (win.pollEvent(sfEvent))
+  {
+    eventTranslate(sfEvent, ie);
+    if (!ie.isIgnored())
+      return true;
+  }
+  return false;
 }
