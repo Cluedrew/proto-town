@@ -4,7 +4,7 @@
 
 // Constructor
 Contact::Contact () :
-  sides
+  sides()
 {}
 
 // Deconstructor

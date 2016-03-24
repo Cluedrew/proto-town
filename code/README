@@ -83,11 +83,18 @@ so the ai can move the Mob.
 that is returned when we go out of range. The physics of the void beyond the
 edge of the map.
 
-CHANGES: physics
-  OK, the main Physics class has to be cleaned up a lot.
-  Some of its work may be outsourced to PartAI, or something in the chain
-between the children of PartAI and Physics, as a sort of wrapper. It should
-be relatively easy to code movement in the ai classes.
+CHANGES: physics, physics-mob
+  OK, the main Physics class has to be cleaned up a lot. It will probably
+remain a stateless shell (if I gave it state it might be the frame rate) with
+all the math contained within it.
+  The trick is I want to (almost never) access it directly. Its interface will
+be hidden in other classes, like the PhysicsMob. I am considering converting
+the PhysicsMob from a data structure to a more ecapsulated object. The PartAI
+will call methods that make changes, without having to worry about the
+mechanics of how these happen.
+  PartAI gives its children access to Mob's PhysicsMob (by the friend link).
+This means having simple operations that can be used on the surface of the
+PhysicsMob will make implementing PartAI subclasses easier.
 
 
 Map System: map, grid, ~ super-grid, tile, physics-map, physics-tile

@@ -11,6 +11,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include "contact.hpp"
 
 // Stort Cut Defines: (This file only)
 #define GETPAIR(a,b) { return sf::Vector2f(a,b); }
@@ -47,10 +48,7 @@ struct PhysicsMob
   float ddy;
 
   // Is a given side of the entity touching a solid?
-  // EXPERAMENTAL
-  //enum Side {Left, Top, Right, Bottem};
-  //+ Conners TopLeft, TopRight, BottemLeft, BottemRight
-  //bool contact[4];
+  Contact contact;
 
   GET_SET(Position,x,y)
   GET_SET(Size,w,h)
