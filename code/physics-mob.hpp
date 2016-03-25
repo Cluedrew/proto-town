@@ -12,6 +12,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include "contact.hpp"
+class AccelRequest;
 
 // Stort Cut Defines: (This file only)
 #define GETPAIR(a,b) { return sf::Vector2f(a,b); }
@@ -23,17 +24,7 @@
 
 struct PhysicsMob
 {
-  PhysicsMob (float x, float y, float w, float h,
-              float dx, float dy, float ddx, float ddy) :
-    x(x), y(y), w(w), h(h), dx(dx), dy(dy), ddx(ddx), ddy(ddy)
-  {}
-
-  PhysicsMob (sf::Vector2f position, sf::Vector2f size,
-              sf::Vector2f velocity, sf::Vector2f acceleration) :
-    x(position.x), y(position.y), w(size.x), h(size.y),
-    dx(velocity.x), dy(velocity.y), ddx(acceleration.x), ddy(acceleration.y)
-  {}
-
+private:
   // The xy location of the entity's upper left corner. (pixels)
   float x;
   float y;
@@ -49,6 +40,19 @@ struct PhysicsMob
 
   // Is a given side of the entity touching a solid?
   Contact contact;
+
+protected:
+public:
+  PhysicsMob (float x, float y, float w, float h,
+              float dx, float dy, float ddx, float ddy) :
+    x(x), y(y), w(w), h(h), dx(dx), dy(dy), ddx(ddx), ddy(ddy)
+  {}
+
+  PhysicsMob (sf::Vector2f position, sf::Vector2f size,
+              sf::Vector2f velocity, sf::Vector2f acceleration) :
+    x(position.x), y(position.y), w(size.x), h(size.y),
+    dx(velocity.x), dy(velocity.y), ddx(acceleration.x), ddy(acceleration.y)
+  {}
 
   GET_SET(Position,x,y)
   GET_SET(Size,w,h)
@@ -70,6 +74,16 @@ struct PhysicsMob
   { return sf::FloatRect(x, y, w, h); }
   /* Get the colliding body of the Mob.
    * Return: A FloatRect made from the position and size of the Mob.
+   */
+
+  void accelUp (AccelRequest const &);
+  void accelDown (AccelRequest const &);
+  void accelLeft (AccelRequest const &);
+  void accelRight (AccelRequest const &);
+  /* Change the acceleration so we are accelerating towards a particular
+   *   velocity.
+   * Params: An unsigned AccelRequest (all fields should be non-negative).
+   * Effect: Sets one of the mob's acceleration fields.
    */
 };
 

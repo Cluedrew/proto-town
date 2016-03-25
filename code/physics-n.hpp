@@ -25,6 +25,7 @@ class Mob;
 class Map;
 class PhysicsMob;
 class PhysicsMap;
+class AccelRequest;
 
 struct Physics
 {
@@ -42,50 +43,6 @@ struct Physics
    * Params: The PhysicsMob to increment and the amount of time to move it
    *   forward by.
    * Return: A new PhysicsMob with possition and velocity updated.
-   */
-
-  // Stucture that has the data for accelerating towards a velocity.
-  struct AccelRequest
-  {
-    AccelRequest (float tv, float maxIn, float maxDe) :
-      targetVelocity(tv), maxIncrease(maxIn), maxDecrease(maxDe)
-    {}
-    /* Define an accelation request.
-     * Params: All messurments are directionless and should be possitive.
-     */
-
-    float targetVelocity;
-    // The velocity that the acceration should bring the object closer to.
-
-    float maxIncrease;
-    // The max increase in velocity (upper bound on acceleration).
-
-    float maxDecrease;
-    // The max decrease in velocity (lower bound on acceleration).
-  };
-  /* This structure is used as an argument in several functions that create
-   * smooth acceleration. Generally creating a constant for a type of movement
-   * and passing a reference to it should work fine.
-   *
-   * targetVelocity is the speed (that is the magnatude) that the object would
-   * like to move at. maxIncrease & maxDecrease are the highest and lowest
-   * accelerations it will undergo. Most of the time one of these will be
-   * the acceleration, except when the currant speed is really close to the
-   * target speed, where it will be in the middle so that the target is
-   * reached at the end of the frame.
-   *
-   * Time and direction data comes from the particular function.
-   */
-
-  static float accelTowardsRight
-      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float accelTowardsLeft
-      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float accelTowardsDown
-      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  static float accelTowardsUp
-      (PhysicsMob const &, sf::Time const &, AccelRequest const &);
-  /* Accel* function calculate smooth acceleration. WIP
    */
 
   static void updateMobContact (PhysicsMob &, Map const &);
@@ -114,16 +71,6 @@ private:
   /* Find the next critical time.
    * Params:
    * Return:
-   */
-
-  static float accelTowardsAxis
-      (float dv, sf::Time const & deltaT, AccelRequest request);
-  /* Return acceleration along an axis.
-   * Params:
-   *   dz: Current velocity along axis.
-   *   deltaT: Change in time.
-   *   request: Signed request for change in acceleration.
-   * Return: The new acceleration along the axis.
    */
 };
 

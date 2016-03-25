@@ -3,6 +3,7 @@
 // Small(er) calculations and helpers.
 
 #include <cmath>
+#include "accel-request.hpp"
 
 // Updates the PhysicsMob for a given amount of time.
 PhysicsMob Physics::incPhysicsMob (PhysicsMob const & physM,
@@ -71,31 +72,4 @@ sf::Time Physics::timeToMove (PhysicsMob const & physM,
     else
     {}
   }
-}
-
-// Return acceleration along an axis.
-float Physics::accelTowardsAxis
-    (float dv, sf::Time const & deltaT, AccelRequest request)
-{
-  // Get the acceleration to arrive at the target velocity.
-  float accelToTarget = (request.targetVelocity - dz) / deltaT;
-
-  // Get the center of the three (so the maxes act as limits).
-  return medianOfThree<float>
-      (request.maxIncrease,
-       accleToTarget,
-       request.maxDecrease);
-}
-
-// Return the midian of the three provided values.
-// Requires bool operator< (T, T) to be defined.
-template<typename T>
-T medianOfThree (T num1, T num2, T num3)
-{
-  return (num1 < num2)
-      ? ((num2 < num3) ? num2 :
-        ((num1 < num3) ? num1 : num3))
-
-      : ((num1 < num3) ? num1 :
-        ((num2 < num3) ? num2 : num3))
 }

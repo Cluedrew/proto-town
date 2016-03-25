@@ -9,6 +9,7 @@
 
 #include "mob.hpp"
 #include "physics-mob.hpp"
+#include "accel-request.hpp"
 
 // singleEntityWithWorld =====================================================
 // Calculate a single Mob's movement across the Map.
@@ -33,30 +34,3 @@ sf::Time Physics::getFrameRate ()
   return deltaT;
 }
 */
-
-// AccelTowards[%] function calculate smooth acceleration to move [%].
-float Physics::accelTowardsRight
-    (PhysicsMob const & physM, sf::Time const & deltaT,
-     AccelRequest const & request)
-{
-  // The current velocity.
-  float velocity = physM.dx;
-  // Sign the AccelRequest.
-  AccelRequest signedRequest(
-      request.targetVelocity,
-      request.maxIncrease,
-      -request.maxDecrease);
-  float accel = accelTowardsAxis(velocity, deltaT, signedRequest);
-}
-float Physics::accelTowardsLeft
-    (PhysicsMob const & physM, sf::Time const & deltaT,
-     AccelRequest const & request)
-{}
-float Physics::accelTowardsDown
-    (PhysicsMob const & physM, sf::Time const & deltaT,
-     AccelRequest const & request)
-{}
-float Physics::accelTowardsUp
-    (PhysicsMob const & physM, sf::Time const & deltaT,
-     AccelRequest const & request)
-{}
