@@ -21,6 +21,7 @@
 #include <SFML/System.hpp>
 class Mob;
 class Map;
+class PhysicsMob;
 
 class PartAI
 {
@@ -43,6 +44,13 @@ protected:
    * Params: A reference to the mob to be accelerated and the acceleration
    *   values in the x (ddx) and y (ddy) axis.
    * Effect: Changes the Mob's velocity.
+   */
+
+  // Might be temperary? It is a catch all for now.
+  PhysicsMob & getPhysicsMob (Mob &);
+  /* Get the Physics from a mob.
+   * Params: Mutable reference to the Mob.
+   * Return: Mutable reference to the Mob's PhysicsMob.
    */
 
 public:

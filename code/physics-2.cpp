@@ -14,8 +14,9 @@ PhysicsMob Physics::singleEntityWithWorldCore
 {
   // New state of the entity if there is no collition.
   PhysicsMob newState = {physM.x + physM.dx, physM.y + physM.dy,
-      physM.w, physM.h, physM.dx, physM.dy, physM.ddx,
-      physM.ddy};
+      physM.w, physM.h,
+      physM.dx + physM.ddx, physM.dy + physM.ddy,
+      physM.ddx, physM.ddy};
 
   // Check to see if there are any objects in the destination location.
   bool collides = false;

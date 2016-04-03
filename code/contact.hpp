@@ -46,7 +46,7 @@ public:
    * Effect: After call the flag for side is set to to.
    */
 
-  bitset::reference operator[] (Side side)
+  std::bitset<8>::reference operator[] (Side side);
   /* Get a reference to a contact flag.
    * Params: The side to get the contact flag for.
    * Return: A mutable refrence to the flag.

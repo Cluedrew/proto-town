@@ -11,6 +11,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Time.hpp>
 #include "contact.hpp"
 class AccelRequest;
 
@@ -24,7 +25,7 @@ class AccelRequest;
 
 struct PhysicsMob
 {
-private:
+//private: (This will be private, but I have more changes to make first.)
   // The xy location of the entity's upper left corner. (pixels)
   float x;
   float y;
@@ -76,13 +77,14 @@ public:
    * Return: A FloatRect made from the position and size of the Mob.
    */
 
-  void accelUp (AccelRequest const &);
-  void accelDown (AccelRequest const &);
-  void accelLeft (AccelRequest const &);
-  void accelRight (AccelRequest const &);
+  void accelUp (AccelRequest const &, sf::Time const &);
+  void accelDown (AccelRequest const &, sf::Time const &);
+  void accelLeft (AccelRequest const &, sf::Time const &);
+  void accelRight (AccelRequest const &, sf::Time const &);
   /* Change the acceleration so we are accelerating towards a particular
    *   velocity.
-   * Params: An unsigned AccelRequest (all fields should be non-negative).
+   * Params: An unsigned AccelRequest (all fields should be non-negative)
+   *   and the time over which this acceleration will be happening.
    * Effect: Sets one of the mob's acceleration fields.
    */
 };

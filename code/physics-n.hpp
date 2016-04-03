@@ -26,6 +26,7 @@ class Map;
 class PhysicsMob;
 class PhysicsMap;
 class AccelRequest;
+class Contact;
 
 struct Physics
 {

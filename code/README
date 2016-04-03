@@ -96,6 +96,12 @@ mechanics of how these happen.
 This means having simple operations that can be used on the surface of the
 PhysicsMob will make implementing PartAI subclasses easier.
 
+Acceleration: accel-request, physics-mob
+  A sub-system has evolved around smooth acceleration. It event has its own
+class, AccelRequest which is just some data and the calculation that turns
+that data into accerations. It can be made anywhere but the proccessing
+should only be called through the accel* functions in the PhysicsMob.
+
 
 Map System: map, grid, ~ super-grid, tile, physics-map, physics-tile
   There is a map which is a grip (2d container I made) of Tiles. The Map does

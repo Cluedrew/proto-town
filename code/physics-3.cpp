@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include "accel-request.hpp"
+#include "physics-mob.hpp"
 
 // Updates the PhysicsMob for a given amount of time.
 PhysicsMob Physics::incPhysicsMob (PhysicsMob const & physM,
@@ -17,6 +18,7 @@ PhysicsMob Physics::incPhysicsMob (PhysicsMob const & physM,
                     physM.ddx, physM.ddy);
 }
 
+/*
 // Find the amount of time it will take physM to move dist. Return the minimum
 // of that time and maxTime. 'v' is some axis, signs are considered.
 sf::Time Physics::timeToMove (PhysicsMob const & physM,
@@ -73,3 +75,4 @@ sf::Time Physics::timeToMove (PhysicsMob const & physM,
     {}
   }
 }
+*/

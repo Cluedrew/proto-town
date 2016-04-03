@@ -2,6 +2,15 @@
 
 // Implementation of the PartAI and the NullAI.
 
+#include "mob.hpp"
+
+// PartAI ====================================================================
+
+PhysicsMob & PartAI::getPhysicsMob (Mob & mob)
+{
+  return mob.phys;
+}
+
 // NullAI ====================================================================
 // Create a duplicate of a NullAI.
 PartAI * NullAI::duplicate ()

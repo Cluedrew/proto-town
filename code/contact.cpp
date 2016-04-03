@@ -15,11 +15,11 @@ Contact::~Contact() {}
 // Set one the contact flags on one of the sides.
 void Contact::set (Side side, bool to)
 {
-  sides.set(side);
+  sides.set(side, to);
 }
 
 // Get a reference to a contact flag.
-bitset::reference Contact::operator[] (Side side)
+std::bitset<8>::reference Contact::operator[] (Side side)
 {
   return sides[side];
 }
@@ -31,7 +31,7 @@ bool Contact::operator[] (Side side) const
 }
 
 // Check for contact on a given side.
-bool Contact::hasContact(Side s) const
+bool Contact::hasContact(Side side) const
 {
   return sides[side];
 }
@@ -39,5 +39,5 @@ bool Contact::hasContact(Side s) const
 // Check for contact with the ground.
 bool Contact::isOnGround() const
 {
-  return sides[Bottom_Left] || sides[Bottom] || sides[Bottom_Right];
+  return sides[BottomLeft] || sides[Bottom] || sides[BottomRight];
 }

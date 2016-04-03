@@ -7,7 +7,6 @@
  * even be an event system for other parts of the game?
  */
 
-#include <SFML/Window/Event.hpp>
 
 struct InputEvent
 {

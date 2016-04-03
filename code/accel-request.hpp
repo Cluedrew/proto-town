@@ -4,6 +4,8 @@
 // Stucture that has the data for accelerating towards a velocity.
 // Part of the physics engine.
 
+#include <SFML/System/Time.hpp>
+
 
 struct AccelRequest
 {

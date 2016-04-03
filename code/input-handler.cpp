@@ -1,5 +1,8 @@
 #include "input-handler.hpp"
 
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Window.hpp>
+#include "input-event.hpp"
 
 // Constructors and Deconstructor:
 //InputHandler::InputHandler () :{}
@@ -52,13 +55,13 @@ static void controlsLookUp(sf::Event const & event, InputEvent ievent)
     ievent.buttonPressed = false;
 }
 
-
-void InputHandler::eventTranslate (sf::Event const & event, Input & ievent)
+void InputHandler::eventTranslate
+    (sf::Event const & sfEvent, InputEvent & iEvent) const
 {
-  switch (event.type)
+  switch (sfEvent.type)
   {
   case sf::Event::Closed:
-    ievent.type = InputEvent::Quit;
+    iEvent.type = InputEvent::Quit;
     break;
   case sf::Event::KeyPressed:
   case sf::Event::KeyReleased:
@@ -67,7 +70,7 @@ void InputHandler::eventTranslate (sf::Event const & event, Input & ievent)
     //else
       // Temperary, although it might be a while before we get
       // a proper system for the controls.
-      controlslookUp(event, ievent);
+      controlsLookUp(sfEvent, iEvent);
     //
     break;
   case sf::Event::TextEntered:
@@ -75,31 +78,32 @@ void InputHandler::eventTranslate (sf::Event const & event, Input & ievent)
     //{}
     //else
     //{
-      ievent.type = InputEvent::Ignored;
+      iEvent.type = InputEvent::Ignored;
     //}
     break;
   default:
-    ievent.type = InputEvent::Ignored;
+    iEvent.type = InputEvent::Ignored;
     break;
   }
 }
 
 
-InputEvent InputHandler::eventTranslate (sf::Event const & event) const
+InputEvent InputHandler::eventTranslate (sf::Event const & sfEvent) const
 {
-  InputEvent ievent;
-  eventTranslate(event, ievent);
-  return ievent;
+  InputEvent iEvent;
+  eventTranslate(sfEvent, iEvent);
+  return iEvent;
 }
 
 
-bool InputHandler::pollEventFrom (sf::Window & win, InputEvent & ie) const
+bool InputHandler::pollEventFrom
+    (sf::Window & window, InputEvent & iEvent) const
 {
   sf::Event sfEvent;
-  while (win.pollEvent(sfEvent))
+  while (window.pollEvent(sfEvent))
   {
-    eventTranslate(sfEvent, ie);
-    if (!ie.isIgnored())
+    eventTranslate(sfEvent, iEvent);
+    if (!iEvent.isIgnored())
       return true;
   }
   return false;

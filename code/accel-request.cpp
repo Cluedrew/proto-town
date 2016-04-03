@@ -1,7 +1,7 @@
 #include "accel-request.hpp"
 
 
-AccelRequest (float tv, float maxIn, float maxDe) :
+AccelRequest::AccelRequest (float tv, float maxIn, float maxDe) :
   targetVelocity(tv), maxIncrease(maxIn), maxDecrease(maxDe)
 {}
 
@@ -27,7 +27,7 @@ float AccelRequest::process
     (float currentVelocity, sf::Time const & over) const
 {
   // Get the acceleration to arrive at the target velocity.
-  float accelToTarget = (targetVelocity - currentVelocity) / over;
+  float accelToTarget = (targetVelocity - currentVelocity) / over.asSeconds();
 
   // Get the center of the three (so the maxes act as limits).
   return minMaxCap<float>(-maxDecrease, accelToTarget, maxIncrease);

@@ -6,6 +6,8 @@
 #include "map.hpp"
 #include "event-queue.hpp"
 #include "player-event.hpp"
+#include "accel-request.hpp"
+
 
 // Constructors and Deconstructor ============================================
 PlayerAI::PlayerAI () :
@@ -26,7 +28,9 @@ PartAI * PlayerAI::duplicate ()
 
 void PlayerAI::update (Mob & mob, sf::Time const & fr, Map & map)
 {
-  accelMob(mob, 0.0f, 0.0625f);
+//  accelMob(mob, 0.0f, 0.0625f);
+  PhysicsMob & physics = getPhysicsMob(mob);
+  physics.accelDown(AccelRequest(2.0f, 0.0625f, 0.0625f), fr);
 
   // Mini-event loop for the player events.
   PlayerEvent pEvent = {PlayerEvent::KeyAction, false};

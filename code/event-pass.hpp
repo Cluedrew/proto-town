@@ -2,11 +2,14 @@
 #define EVENT_PASS_HPP
 
 /* A class that passes events to structures that need it, it is a part of
- * the event handling loop
+ * the event handling loop.
+ *
+ * This is in the process of being removed.
  */
 
 #include <SFML/Window.hpp>
 class Mob;
+class InputEvent;
 
 class EventPass
 {
@@ -24,9 +27,11 @@ public:
    */
   
   static void handleEvent (sf::Event const & event);
-  /* Handler for KeyDown and TextEntered events.
-   * Params: A constant reference to an Event.
-   * Effect: Varies with the Event.
+  static void handleEvent (InputEvent const & event);
+  /* Handler for KeyDown and TextEntered events. (sf::Event)
+   *           | Player* InputEvents
+   * Params: A constant reference to an event.
+   * Effect: Varies with the event.
    */
 };
 

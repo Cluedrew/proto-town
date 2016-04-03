@@ -5,9 +5,12 @@
  * options.
  */
 
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Window.hpp>
-#include "input-event.hpp"
+namespace sf
+{
+  class Event;
+  class Window;
+}
+class InputEvent;
 
 class InputHandler
 {
@@ -28,7 +31,7 @@ public:
    * Return: If iEvent is not provided, the translated event is returned.
    */
 
-  bool pollEventFrom (sf::Window &, InputEvent &) const;
+  bool pollEventFrom (sf::Window & window, InputEvent & iEvent) const;
   /* Poll an event and translate it to an InputEvent.
    * Params: A mutable reference to the Window to poll from and mutable
    *   reference to the location to store the translated event in.
