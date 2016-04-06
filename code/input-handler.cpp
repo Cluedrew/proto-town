@@ -25,7 +25,7 @@ InputHandler::~InputHandler ()
  *   physical to purpose, and so have a slightly different interface, but
  *   this is close enough for now.
  */
-static void controlsLookUp(sf::Event const & event, InputEvent ievent)
+static void controlsLookUp(sf::Event const & event, InputEvent & ievent)
 {
   switch (event.key.code)
   {

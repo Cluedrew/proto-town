@@ -49,7 +49,7 @@ void EventPass::handleEvent (sf::Event const & event)
   else if (sf::Event::TextEntered == event.type &&
       '\n' == event.text.unicode)
   {}*/
-  
+
   // Regester an event with the player EventQueue
   if (sf::Event::KeyPressed == event.type)
   {
@@ -72,12 +72,18 @@ void EventPass::handleEvent (InputEvent const & event)
   {
   case InputEvent::PlayerLeft:
     pEvent.type = PlayerEvent::KeyLeft;
+    break;
   case InputEvent::PlayerRight:
     pEvent.type = PlayerEvent::KeyRight;
+    break;
   case InputEvent::PlayerUp:
     pEvent.type = PlayerEvent::KeyUp;
-  // case InputEvent::PlayerDown:
+    break;
+  case InputEvent::PlayerDown:
+    pEvent.type = PlayerEvent::KeyDown;
+    break;
   case InputEvent::PlayerAction:
+    break;
   default:
     pEvent.type = PlayerEvent::KeyAction;
   }

@@ -1,8 +1,8 @@
 /* Main function for InkV.7.3
- * 
+ *
  * It handles any command line arguments (currantly, all are ignored) and
  * contains the five stages and the main loop.
- * 
+ *
  * For errors it will print out a label if this is a debug build and will
  * catch and print out the what messages from any exceptions, returning
  * a failure exit code in these cases.
@@ -19,6 +19,8 @@
 #include "mob-collect.hpp"
 #include "image-def.hpp"
 #include "event-pass.hpp"
+#include "input-event.hpp"
+#include "input-handler.hpp"
 
 int main (int argc, char * argv[])
 {
@@ -29,70 +31,65 @@ int main (int argc, char * argv[])
   {
     // === set-up ===
     bool running = true;
-    
+
     // The image library: contains all of the loaded textures.
     // Will throw an exception if they don't all load.
     ImageLib imageLib;
-    
+
     // The window that the game takes place in.
     sf::RenderWindow window(sf::VideoMode(800, 600), "inkv7",
                             sf::Style::Titlebar | sf::Style::Close);
-    
+
     // The factory for in game mobs.
     MobCollect mobs(imageLib);
     mobs.spawn(MobID::player, 50, 50);
-    
+
     // The map, its "tile set" comes from the imageLib.
     Map map(imageLib);
-    
+
     // Part of the event handler,
     EventPass eventPass;
-    
+    InputHandler inHandle;
+
     // Start the game clock right before hitting the main loop. 60fps
     LoopClock loopClock(60);
-    
+
     // === main loop ===
     while (running)
     {
       // === event handler ===
-      sf::Event event;
-      while (window.pollEvent(event))
+      InputEvent event;
+      while (inHandle.pollEventFrom(window, event))
       {
         switch (event.type)
         {
-          case sf::Event::Closed:
+          case InputEvent::Quit:
             running = false;
             break;
-            // testing ...
-          case sf::Event::TextEntered:
-            //std::cout << ':' << (charw)(event.text) << std::endl;
-            //std::cout << "TextEntered" << std::endl;
+          case InputEvent::Ignored:
+            std::cerr << "Ignored event appeared in the event loop.\n";
             break;
-          case sf::Event::KeyPressed:
-          case sf::Event::KeyReleased:
-            eventPass.handleEvent(event);
-            break;
-            // end testing
           default:
+            eventPass.handleEvent(event);
             break;
         }
       }
       // === update ===
       mobs.update(loopClock.getIncrement(), map);
-      
+
       // === render ===
       window.clear(sf::Color::Black);
       window.draw(map);
       window.draw(mobs);
       window.display();
-      
+
       // === wait ===
       loopClock.wait();
     }
-    
+
     // === clean up ===
     window.close();
-    
+
     return 0;
   }
   catch (std::exception & e)

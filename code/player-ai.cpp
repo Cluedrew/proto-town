@@ -2,6 +2,7 @@
 
 // Implementation of the player's IA component.
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "map.hpp"
 #include "event-queue.hpp"

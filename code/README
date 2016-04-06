@@ -112,6 +112,12 @@ which contains all of the information needed  to determain colitions with
 Tiles. Actually it does't contain location information, but are instead
 reteved by location.
 
+CHANGES:
+  If I bring back super-grid I should probably make it and sub-grid children
+of grid, so they all have the same interface.
+  The interactions between map, grid, tile & physic-map are a little bit messy
+and should probably be cleaned up.
+
 
 Mob System: mob, mob-collect, part-ai, physics-mob
   Mobs are your generic moving thing on the map. Although they aren't actually
@@ -124,5 +130,8 @@ a bit of a factory for the Mobs, although creating them is really simple.
 the image and the components (currently just the PartAI).
 
 CHANGES:
-  Nothing urgent is required, although some way to send messages to particular
-Mobs might be nice.
+  Some way to send messages to particular Mobs might be nice.
+  However the main thing that needs work is the interaction between mobs and
+the Physics call. PhysicsMob is really that intersection but still more needs
+to be done in and around that point. Particularly it has to be really easy to
+make Mobs move around from inside PartIA::update.
