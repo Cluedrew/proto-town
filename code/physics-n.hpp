@@ -11,6 +11,8 @@
  * 1: Public Functions, dispatchers for the other files.
  * 2: Some of the really big calculation functions.
  * 3: Small helper calculator functions.
+ *   I would like to merge these and just have physics.hpp & physics.cpp, but
+ * with how much things change that might not be a good idea.
  *
  * The physics of this game works like this:
  * Tiles are locked in place and stored in the map. Although they can change
@@ -20,7 +22,10 @@
  * Formally Collider. Currently it has no state.
  */
 
-#include <SFML/System/Time.hpp>
+namespace sf
+{
+  class Time;
+}
 class Mob;
 class Map;
 class PhysicsMob;
@@ -46,6 +51,7 @@ struct Physics
    * Return: A new PhysicsMob with possition and velocity updated.
    */
 
+  // This should be removed, or at least made part of the PhysicsMob update.
   static void updateMobContact (PhysicsMob &, Map const &);
   // Modifer version?
 
@@ -75,12 +81,5 @@ private:
    */
 };
 
-template<typename T>
-T medianOfThree (T val1, T val2, T val3);
-/* Return the midian of the three provided values.
- * Requires bool operator< (T, T) to be defined.
- * Params: Three values of a type that is orderable by operator<.
- * Return: One of the three values, the middle one in ordering.
- */
 
 #endif//PHYSICS_N_HPP

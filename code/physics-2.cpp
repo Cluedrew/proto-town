@@ -4,6 +4,7 @@
  * Usually very simple purposes, but really complicated math behind it.
  */
 
+#include <SFML/System/Time.hpp>
 #include "map.hpp"
 #include "physics-mob.hpp"
 #include "physics-tile.hpp"
@@ -13,10 +14,16 @@ PhysicsMob Physics::singleEntityWithWorldCore
   (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
 {
   // New state of the entity if there is no collition.
-  PhysicsMob newState = {physM.x + physM.dx, physM.y + physM.dy,
+  PhysicsMob newState = physM.forwardCopy(deltaT);
+      /*/ If the above continues to work, remove the below.
+     {physM.x + physM.dx, physM.y + physM.dy,
       physM.w, physM.h,
       physM.dx + physM.ddx, physM.dy + physM.ddy,
       physM.ddx, physM.ddy};
+      //*/
+  //physM.print(true);
+  //newState.print(true);
+
 
   // Check to see if there are any objects in the destination location.
   bool collides = false;

@@ -4,7 +4,7 @@
 /* The player mob's PartAI Component.
  */
 
-#include <SFML/System.hpp>
+#include <SFML/System/Time.hpp>
 #include "part-ai.hpp"
 
 class PlayerAI : public PartAI

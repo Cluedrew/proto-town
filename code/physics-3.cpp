@@ -2,6 +2,7 @@
 
 // Small(er) calculations and helpers.
 
+#include <SFML/System/Time.hpp>
 #include <cmath>
 #include "accel-request.hpp"
 #include "physics-mob.hpp"

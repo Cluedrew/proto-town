@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <SFML/System/Time.hpp>
 
 #include "mob.hpp"
 #include "physics-mob.hpp"

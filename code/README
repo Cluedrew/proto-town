@@ -100,7 +100,8 @@ Acceleration: accel-request, physics-mob
   A sub-system has evolved around smooth acceleration. It event has its own
 class, AccelRequest which is just some data and the calculation that turns
 that data into accerations. It can be made anywhere but the proccessing
-should only be called through the accel* functions in the PhysicsMob.
+should generally only be called through the accel* functions in the
+PhysicsMob, where direction and setting is handled.
 
 
 Map System: map, grid, ~ super-grid, tile, physics-map, physics-tile

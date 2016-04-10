@@ -7,8 +7,17 @@
  * sf::Vector2f is heavily used for pairs.
  *
  * Formally, ColliderData.
+ *   Working on a struct to class conversion. That difference is mainly one of
+ * style, but I think a layer of abstraction might help with this problem. It
+ * may cost just a little bit of runtime speed but at this point I'm going
+ * pretty slow anyways.
  */
 
+//namespace std
+//{
+//  class ostream;
+//}
+#include <iosfwd>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Time.hpp>
@@ -87,6 +96,24 @@ public:
    *   and the time over which this acceleration will be happening.
    * Effect: Sets one of the mob's acceleration fields.
    */
+
+  PhysicsMob forwardCopy(sf::Time const & time) const;
+  /* Get a copy of what this physics mob will look like after time has passed.
+   *   This does not take into account any outside factors.
+   * Params: The amount of time to move the PhysicsMob forward by.
+   * Return: A new PhysicsMob.
+   */
+
+#ifdef DEBUG
+  void print(bool line = false) const;
+  void print(std::ostream & out, bool line = false) const;
+  /* Print the Physics Mob to stream, defaults to std::cout. For debugging.
+   * Params: out, a mutable reference the stream to print to. If line is true
+   *   then the output is followed with a newline.
+   * Effect: Prints to the stream.
+   * Return: Reference to the stream.
+   */
+#endif//DEBUG
 };
 
 // Clean up the short cuts so they don't spill.
@@ -96,5 +123,9 @@ public:
 #undef GETTER
 #undef SETPAIR
 #undef GETPAIR
+
+#ifdef DEBUG
+std::ostream & operator<< (std::ostream & out, PhysicsMob const & physMob);
+#endif//DEBUG
 
 #endif//PHYSICS_MOB_HPP
