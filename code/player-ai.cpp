@@ -8,6 +8,7 @@
 #include "event-queue.hpp"
 #include "player-event.hpp"
 #include "accel-request.hpp"
+#include "utils.hpp"
 
 
 // Constructors and Deconstructor ============================================
@@ -32,9 +33,13 @@ void PlayerAI::update (Mob & mob, sf::Time const & fr, Map & map)
 //  accelMob(mob, 0.0f, 0.0625f);
   PhysicsMob & physics = getPhysicsMob(mob);
   //physics.accelDown(AccelRequest(20.0f, 0.0625f, 0.0625f), fr);
-  physics.accelDown(AccelRequest(50.0f, 20.0f, 20.0f), fr);
+  physics.accelDown(AccelRequest(blocksToPixels(15),
+                                 blocksToPixels(5),
+                                 blocksToPixels(5)), fr);
 
-  static const AccelRequest walkingAccel(2.0f, 0.0625f, 0.125f);
+  static const AccelRequest walkingAccel(blocksToPixels(10),
+                                         blocksToPixels(2),
+                                         blocksToPixels(2));
 
   // Mini-event loop for the player events.
   PlayerEvent pEvent = {PlayerEvent::KeyAction, false};
