@@ -7,18 +7,6 @@
 #include "accel-request.hpp"
 #include "physics-mob.hpp"
 
-// Updates the PhysicsMob for a given amount of time.
-PhysicsMob Physics::incPhysicsMob (PhysicsMob const & physM,
-                                   sf::Time const & time)
-{
-  float dt = time.asSeconds();
-  return PhysicsMob(physM.x + physM.dx * dt + 0.5f * physM.ddx * dt * dt,
-                    physM.y + physM.dy * dt + 0.5f * physM.ddy * dt * dt,
-                    physM.w, physM.h,
-                    physM.dx + physM.ddx * dt, physM.dy + physM.ddy * dt,
-                    physM.ddx, physM.ddy);
-}
-
 /*
 // Find the amount of time it will take physM to move dist. Return the minimum
 // of that time and maxTime. 'v' is some axis, signs are considered.

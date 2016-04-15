@@ -34,12 +34,12 @@ void PlayerAI::update (Mob & mob, sf::Time const & fr, Map & map)
   PhysicsMob & physics = getPhysicsMob(mob);
   //physics.accelDown(AccelRequest(20.0f, 0.0625f, 0.0625f), fr);
   physics.accelDown(AccelRequest(blocksToPixels(15),
-                                 blocksToPixels(5),
-                                 blocksToPixels(5)), fr);
+                                 blocksToPixels(10),
+                                 blocksToPixels(10)), fr);
 
   static const AccelRequest walkingAccel(blocksToPixels(10),
-                                         blocksToPixels(2),
-                                         blocksToPixels(2));
+                                         blocksToPixels(7),
+                                         blocksToPixels(7));
 
   // Mini-event loop for the player events.
   PlayerEvent pEvent = {PlayerEvent::KeyAction, false};
@@ -50,7 +50,7 @@ void PlayerAI::update (Mob & mob, sf::Time const & fr, Map & map)
       // Jump
     case PlayerEvent::KeyUp:
       if (pEvent.pressed)
-        accelMob(mob, 0.0f, -5.f);
+        accelMob(mob, 0.0f, -250.f);
       break;
       // Move Left
     case PlayerEvent::KeyLeft:

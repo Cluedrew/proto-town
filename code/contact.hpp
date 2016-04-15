@@ -40,6 +40,10 @@ public:
 
   virtual ~Contact();
 
+  Contact & operator= (Contact const & other);
+  bool operator== (Contact const & other) const;
+  bool operator!= (Contact const & other) const;
+
   void set (Side side, bool to);
   /* Set one the contact flags on one of the sides.
    * Params: The side to set the contact flag for and the value to set it to.

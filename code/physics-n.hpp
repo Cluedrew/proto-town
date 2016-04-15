@@ -44,19 +44,8 @@ struct Physics
    *   given time has passed.
    */
 
-  static PhysicsMob incPhysicsMob (PhysicsMob const &, sf::Time const &);
-  /* Move a PhysicsMob forward in time assuming no colitions.
-   * Params: The PhysicsMob to increment and the amount of time to move it
-   *   forward by.
-   * Return: A new PhysicsMob with possition and velocity updated.
-   */
-
-  // This should be removed, or at least made part of the PhysicsMob update.
-  static void updateMobContact (PhysicsMob &, Map const &);
-  // Modifer version?
-
   static Contact newMobContact (PhysicsMob const &, Map const &);
-  /*
+  /* Calculate the Contact data for a PhysicsMob in a Map.
    * Params: The PhysicsMob to get the Contact for and the Map it contacts.
    * Return: A new Contact object.
    */

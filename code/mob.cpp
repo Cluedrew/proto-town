@@ -10,6 +10,8 @@
 #include "player-ai.hpp"
 #include "physics-n.hpp"
 
+#include <iostream>
+
 // Constructors and Deconstructor ============================================
 Mob::Mob (ImageLib const & imgLib, MobID id, unsigned int x, unsigned int y) :
   sprite(imgLib.GetMobTex(), imgLib.GetMobRect(id, MobStateID::standing)),
@@ -74,6 +76,22 @@ void Mob::update (sf::Time const & fr, Map & map)
   // Move the sprite to the Mob's currant location.
   // Sort of wanted this to be in draw, but that has to be constant.
   sprite.setPosition(phys.x, phys.y);
+
+  Contact nextContact = Physics::newMobContact(phys, map);
+  if (nextContact == phys.contact)
+  {
+    Contact::Side viewSides[8] = {Contact::Top, Contact::TopRight,
+        Contact::Right, Contact::BottomRight, Contact::Bottom,
+        Contact::BottomLeft, Contact::Left, Contact::TopLeft};
+    std::cout << "Contact Changed ";
+    for (int i = 0 ; i < 8 ; ++i)
+      { std::cout << (phys.contact[viewSides[i]] ? '|' : '-'); }
+    std::cout << " => ";
+    for (int i = 0 ; i < 8 ; ++i)
+      { std::cout << (nextContact[viewSides[i]] ? '|' : '-'); }
+    std::cout << std::endl;
+    phys.contact = nextContact;
+  }
 }
 
 // Getter Functions ----------------------------------------------------------

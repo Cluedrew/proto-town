@@ -11,6 +11,26 @@ Contact::Contact () :
 Contact::~Contact() {}
 
 
+// Assignment
+Contact & Contact::operator= (Contact const & other)
+{
+  sides = other.sides;
+  return *this;
+}
+
+
+// Equality
+bool Contact::operator== (Contact const & other) const
+{
+  return sides == other.sides;
+}
+
+// Inequality
+bool Contact::operator!= (Contact const & other) const
+{
+  return sides != other.sides;
+}
+
 
 // Set one the contact flags on one of the sides.
 void Contact::set (Side side, bool to)

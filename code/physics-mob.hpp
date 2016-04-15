@@ -13,10 +13,6 @@
  * pretty slow anyways.
  */
 
-//namespace std
-//{
-//  class ostream;
-//}
 #include <iosfwd>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>

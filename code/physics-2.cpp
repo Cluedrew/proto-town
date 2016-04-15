@@ -5,9 +5,11 @@
  */
 
 #include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include "map.hpp"
 #include "physics-mob.hpp"
 #include "physics-tile.hpp"
+#include "utils.hpp"
 
 // Calculate a single Mob's movement across the Map.
 PhysicsMob Physics::singleEntityWithWorldCore
@@ -15,15 +17,6 @@ PhysicsMob Physics::singleEntityWithWorldCore
 {
   // New state of the entity if there is no collition.
   PhysicsMob newState = physM.forwardCopy(deltaT);
-      /*/ If the above continues to work, remove the below.
-     {physM.x + physM.dx, physM.y + physM.dy,
-      physM.w, physM.h,
-      physM.dx + physM.ddx, physM.dy + physM.ddy,
-      physM.ddx, physM.ddy};
-      //*/
-  //physM.print(true);
-  //newState.print(true);
-
 
   // Check to see if there are any objects in the destination location.
   bool collides = false;
@@ -55,4 +48,65 @@ sf::Time Physics::singleEntityNextCriticalTime
   // Assume no critical times happen besides the end of the mob's movement.
   // TODO: Have a proper solution that checks mid points.
   return deltaT;
+}
+
+Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
+{
+  Contact fin;
+
+  sf::FloatRect mobBody = physM.getBody();
+  sf::IntRect mobBox = map.pixelToTileBounds(mobBody);
+
+  // The four mesurements we actually need.
+  // This also high-lights the accidental duplication I have.
+  float topEdge = blocksToPixels(mobBox.top);
+  float leftEdge = blocksToPixels(mobBox.left);
+  float rightEdge = blocksToPixels(mobBox.left + mobBox.width);
+  float bottomEdge = blocksToPixels(mobBox.top + mobBox.height);
+
+  // Top
+  if (mobBody.top == topEdge)
+  {
+    for (int i = 0 ; i < mobBox.width ; ++i)
+      if (!map.at(i + mobBox.left, mobBox.top - 1).passableEh())
+      {
+        fin.set(Contact::Top, true);
+        break;
+      }
+  }
+
+  // Left
+  if (mobBody.left == leftEdge)
+  {
+    for (int i = 0 ; i < mobBox.height ; ++i)
+      if (!map.at(mobBox.left - 1, i + mobBox.top).passableEh())
+      {
+        fin.set(Contact::Left, true);
+        break;
+      }
+  }
+
+  // Right
+  if (mobBody.left + mobBody.width == rightEdge)
+  {
+    for (int i = 0 ; i < mobBox.height ; ++i)
+      if (!map.at(mobBox.left + mobBox.width + 1, i + mobBox.top).passableEh())
+      {
+        fin.set(Contact::Left, true);
+        break;
+      }
+  }
+
+  // Bottom
+  if (mobBody.top + mobBody.height == bottomEdge)
+  {
+    for (int i = 0 ; i < mobBox.width ; ++i)
+      if (!map.at(i + mobBox.top, mobBox.top + mobBox.height + 1).passableEh())
+      {
+        fin.set(Contact::Bottom, true);
+        break;
+      }
+  }
+
+  return fin;
 }
