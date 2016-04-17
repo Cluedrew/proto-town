@@ -11,6 +11,8 @@
 #include "physics-tile.hpp"
 #include "utils.hpp"
 
+#include <iostream>
+
 // Calculate a single Mob's movement across the Map.
 PhysicsMob Physics::singleEntityWithWorldCore
   (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
@@ -29,10 +31,7 @@ PhysicsMob Physics::singleEntityWithWorldCore
       collides = true;
     // Or into any impassible tiles?
     else
-      for (int yi = dest.top ; yi < dest.top + dest.height ; ++yi)
-        for (int xi = dest.left ; xi < dest.left + dest.width ; ++xi)
-          if (!map.at(xi, yi).passableEh())
-            { collides = true; break; }
+      collides = !isAreaEmpty(dest, map);
   }
 
   // If there was a collition, stop all movement.
@@ -50,12 +49,19 @@ sf::Time Physics::singleEntityNextCriticalTime
   return deltaT;
 }
 
+
+// see header
 Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
 {
   Contact fin;
 
   sf::FloatRect mobBody = physM.getBody();
   sf::IntRect mobBox = map.pixelToTileBounds(mobBody);
+
+  std::cout << '(' << mobBody.left << ',' << mobBody.top << ','
+      << mobBody.width << ',' << mobBody.height << ')' << std::endl;
+  std::cout << '[' << mobBox.left << ',' << mobBox.top << ','
+      << mobBox.width << ',' << mobBox.height << ']' << std::endl;
 
   // The four mesurements we actually need.
   // This also high-lights the accidental duplication I have.
@@ -64,8 +70,13 @@ Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
   float rightEdge = blocksToPixels(mobBox.left + mobBox.width);
   float bottomEdge = blocksToPixels(mobBox.top + mobBox.height);
 
+  float const within = 0.05f;
+
+  std::cout << '{' << leftEdge << ',' << topEdge << ';'
+      << rightEdge << ',' << bottomEdge << '}' << std::endl;
+
   // Top
-  if (mobBody.top == topEdge)
+  if (aEq(mobBody.top, topEdge, within))
   {
     for (int i = 0 ; i < mobBox.width ; ++i)
       if (!map.at(i + mobBox.left, mobBox.top - 1).passableEh())
@@ -76,7 +87,7 @@ Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
   }
 
   // Left
-  if (mobBody.left == leftEdge)
+  if (aEq(mobBody.left, leftEdge, within))
   {
     for (int i = 0 ; i < mobBox.height ; ++i)
       if (!map.at(mobBox.left - 1, i + mobBox.top).passableEh())
@@ -87,21 +98,21 @@ Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
   }
 
   // Right
-  if (mobBody.left + mobBody.width == rightEdge)
+  if (aEq(mobBody.left + mobBody.width, rightEdge, within))
   {
     for (int i = 0 ; i < mobBox.height ; ++i)
-      if (!map.at(mobBox.left + mobBox.width + 1, i + mobBox.top).passableEh())
+      if (!map.at(mobBox.left + mobBox.width, i + mobBox.top).passableEh())
       {
-        fin.set(Contact::Left, true);
+        fin.set(Contact::Right, true);
         break;
       }
   }
 
   // Bottom
-  if (mobBody.top + mobBody.height == bottomEdge)
+  if (aEq(mobBody.top + mobBody.height, bottomEdge, within))
   {
     for (int i = 0 ; i < mobBox.width ; ++i)
-      if (!map.at(i + mobBox.top, mobBox.top + mobBox.height + 1).passableEh())
+      if (!map.at(i + mobBox.top, mobBox.top + mobBox.height).passableEh())
       {
         fin.set(Contact::Bottom, true);
         break;

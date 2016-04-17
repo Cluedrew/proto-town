@@ -3,9 +3,39 @@
 // Small(er) calculations and helpers.
 
 #include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 #include "accel-request.hpp"
 #include "physics-mob.hpp"
+#include "map.hpp"
+
+
+// see header
+bool Physics::isAreaEmpty (sf::IntRect const & area, Map const & map)
+{
+  int const areaBottom = area.top + area.height;
+  int const areaRight = area.left + area.width;
+
+  for (int yi = area.top ; yi < areaBottom ; ++yi)
+  {
+    for (int xi = area.left ; xi < areaRight ; ++xi)
+    {
+      if (!map.at(xi, yi).passableEh())
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// see header
+bool Physics::isAreaEmpty (int left, int top, int width, int height,
+                           Map const & map)
+{
+  return isAreaEmpty(sf::IntRect(left, top, width, height), map);
+}
 
 /*
 // Find the amount of time it will take physM to move dist. Return the minimum

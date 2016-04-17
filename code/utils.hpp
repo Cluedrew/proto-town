@@ -25,4 +25,10 @@ int pixelsToBlocks (float pixels);
  * Return: The messurement in blocks.
  */
 
+bool aEq (float lhs, float rhs, float diff);
+/* Approximatly equals, check if lhs & rhs differ by diff or less.
+ * Params: lhs & rhs can be any two floats, diff must be non-negative.
+ * Return: True if lhs & rhs are approximatly equal, false otherwise.
+ */
+
 #endif//UTILS_HPP

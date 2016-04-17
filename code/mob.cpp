@@ -78,7 +78,7 @@ void Mob::update (sf::Time const & fr, Map & map)
   sprite.setPosition(phys.x, phys.y);
 
   Contact nextContact = Physics::newMobContact(phys, map);
-  if (nextContact == phys.contact)
+  if (nextContact != phys.contact)
   {
     Contact::Side viewSides[8] = {Contact::Top, Contact::TopRight,
         Contact::Right, Contact::BottomRight, Contact::Bottom,

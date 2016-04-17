@@ -14,7 +14,11 @@ Contact::~Contact() {}
 // Assignment
 Contact & Contact::operator= (Contact const & other)
 {
-  sides = other.sides;
+  for (size_t i = 0 ; i < sides.size() ; ++i)
+  {
+    sides.set(i, other.sides.test(i));
+  }
+
   return *this;
 }
 

@@ -25,6 +25,7 @@
 namespace sf
 {
   class Time;
+  template<typename T> class Rect;
 }
 class Mob;
 class Map;
@@ -67,6 +68,15 @@ private:
   /* Find the next critical time.
    * Params:
    * Return:
+   */
+
+  static bool isAreaEmpty (sf::Rect<int> const & area, Map const & map);
+  static bool isAreaEmpty (int left, int top, int width, int height,
+                           Map const & map);
+  /* Is the entire area of the map empty?
+   * Params: A Rectangle, or messurements to create a rectanglar area, and
+   *   a constant reference to the Map to search.
+   * Return: True if the area is entirely passable tiles, false otherwise.
    */
 };
 
