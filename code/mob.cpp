@@ -15,7 +15,7 @@
 // Constructors and Deconstructor ============================================
 Mob::Mob (ImageLib const & imgLib, MobID id, unsigned int x, unsigned int y) :
   sprite(imgLib.GetMobTex(), imgLib.GetMobRect(id, MobStateID::standing)),
-  ai(selectAI(id)), phys(x,y, 0,0, 0,0, 0,0)
+  ai(selectAI(id)), phys(x,y, 0,0, 0,0, 0,0, Contact())
 {
   // Move the sprite to the Mob's starting location.
   sf::Vector2f msPosition(x, y);
@@ -70,6 +70,8 @@ void Mob::update (sf::Time const & fr, Map & map)
   // Run the AI and perform the local updates.
   ai->update(*this, fr, map);
 
+  Contact lastContact = phys.contact;
+
   // Run forward through time according to physics.
   phys = Physics::singleEntityWithWorld(*this, fr, map);
 
@@ -78,20 +80,20 @@ void Mob::update (sf::Time const & fr, Map & map)
   sprite.setPosition(phys.x, phys.y);
 
   Contact nextContact = Physics::newMobContact(phys, map);
-  if (nextContact != phys.contact)
+  /*if (nextContact != lastContact)
   {
     Contact::Side viewSides[8] = {Contact::Top, Contact::TopRight,
         Contact::Right, Contact::BottomRight, Contact::Bottom,
         Contact::BottomLeft, Contact::Left, Contact::TopLeft};
     std::cout << "Contact Changed ";
     for (int i = 0 ; i < 8 ; ++i)
-      { std::cout << (phys.contact[viewSides[i]] ? '|' : '-'); }
+      { std::cout << (lastContact[viewSides[i]] ? '|' : '-'); }
     std::cout << " => ";
     for (int i = 0 ; i < 8 ; ++i)
       { std::cout << (nextContact[viewSides[i]] ? '|' : '-'); }
     std::cout << std::endl;
-    phys.contact = nextContact;
-  }
+  }*/
+  phys.contact = nextContact;
 }
 
 // Getter Functions ----------------------------------------------------------

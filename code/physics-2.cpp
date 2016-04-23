@@ -36,7 +36,7 @@ PhysicsMob Physics::singleEntityWithWorldCore
 
   // If there was a collition, stop all movement.
   return (collides) ? PhysicsMob(physM.x, physM.y, physM.w,
-                                 physM.h, 0, 0, 0, 0)
+                                 physM.h, 0, 0, 0, 0, Contact())
                     : newState;
 }
 
@@ -58,11 +58,6 @@ Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
   sf::FloatRect mobBody = physM.getBody();
   sf::IntRect mobBox = map.pixelToTileBounds(mobBody);
 
-  std::cout << '(' << mobBody.left << ',' << mobBody.top << ','
-      << mobBody.width << ',' << mobBody.height << ')' << std::endl;
-  std::cout << '[' << mobBox.left << ',' << mobBox.top << ','
-      << mobBox.width << ',' << mobBox.height << ']' << std::endl;
-
   // The four mesurements we actually need.
   // This also high-lights the accidental duplication I have.
   float topEdge = blocksToPixels(mobBox.top);
@@ -70,10 +65,7 @@ Contact Physics::newMobContact (PhysicsMob const & physM, Map const & map)
   float rightEdge = blocksToPixels(mobBox.left + mobBox.width);
   float bottomEdge = blocksToPixels(mobBox.top + mobBox.height);
 
-  float const within = 0.05f;
-
-  std::cout << '{' << leftEdge << ',' << topEdge << ';'
-      << rightEdge << ',' << bottomEdge << '}' << std::endl;
+  float const within = 0.15f;
 
   // Top
   if (aEq(mobBody.top, topEdge, within))

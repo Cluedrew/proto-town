@@ -3,6 +3,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
 #include "input-event.hpp"
+#include "control-map.hpp"
 
 // Constructors and Deconstructor:
 //InputHandler::InputHandler () :{}
@@ -27,21 +28,23 @@ InputHandler::~InputHandler ()
  */
 static void controlsLookUp(sf::Event const & event, InputEvent & ievent)
 {
-  switch (event.key.code)
+  static ControlMap mapping;
+  Controls button = mapping.lookupKey(event.key.code);
+  switch (button)
   {
-  case sf::Keyboard::Left:
-    ievent.type = InputEvent::PlayerLeft;
-    break;
-  case sf::Keyboard::Right:
-    ievent.type = InputEvent::PlayerRight;
-    break;
-  case sf::Keyboard::Up:
+  case Controls::Up:
     ievent.type = InputEvent::PlayerUp;
     break;
-  case sf::Keyboard::Down:
+  case Controls::Down:
     ievent.type = InputEvent::PlayerDown;
     break;
-  case sf::Keyboard::Space:
+  case Controls::Left:
+    ievent.type = InputEvent::PlayerLeft;
+    break;
+  case Controls::Right:
+    ievent.type = InputEvent::PlayerRight;
+    break;
+  case Controls::Action:
     ievent.type = InputEvent::PlayerAction;
     break;
   default:

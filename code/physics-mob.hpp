@@ -50,8 +50,10 @@ struct PhysicsMob
 protected:
 public:
   PhysicsMob (float x, float y, float w, float h,
-              float dx, float dy, float ddx, float ddy) :
-    x(x), y(y), w(w), h(h), dx(dx), dy(dy), ddx(ddx), ddy(ddy)
+              float dx, float dy, float ddx, float ddy,
+              Contact contact) :
+    x(x), y(y), w(w), h(h), dx(dx), dy(dy), ddx(ddx), ddy(ddy),
+    contact(contact)
   {}
 
   PhysicsMob (sf::Vector2f position, sf::Vector2f size,
@@ -98,6 +100,11 @@ public:
    *   This does not take into account any outside factors.
    * Params: The amount of time to move the PhysicsMob forward by.
    * Return: A new PhysicsMob.
+   */
+
+  bool isOnGround() const;
+  /* Check to see if the Mob is on the ground.
+   * Return: True if the Mob is on any surface.
    */
 
 #ifdef DEBUG

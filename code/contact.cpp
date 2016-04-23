@@ -7,6 +7,10 @@ Contact::Contact () :
   sides()
 {}
 
+Contact::Contact(Contact const & other) :
+  sides(other.sides)
+{}
+
 // Deconstructor
 Contact::~Contact() {}
 
@@ -14,10 +18,7 @@ Contact::~Contact() {}
 // Assignment
 Contact & Contact::operator= (Contact const & other)
 {
-  for (size_t i = 0 ; i < sides.size() ; ++i)
-  {
-    sides.set(i, other.sides.test(i));
-  }
+  sides = other.sides;
 
   return *this;
 }
@@ -61,7 +62,7 @@ bool Contact::hasContact(Side side) const
 }
 
 // Check for contact with the ground.
-bool Contact::isOnGround() const
+bool Contact::hasSupportingContact() const
 {
   return sides[BottomLeft] || sides[Bottom] || sides[BottomRight];
 }

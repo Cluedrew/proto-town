@@ -31,6 +31,16 @@ struct InputEvent
     Ignored
   };
 
+  //struct PlayerButtonData
+  //{
+  //  Controls button;
+  //  bool isPressed;
+  //};
+
+  //struct ConsolInputData
+  //{
+  //  ... text;
+  //};
 
   TypeValue type;
 

@@ -38,6 +38,10 @@ public:
   /* Creates a new Contact object with all flags at zero.
    */
 
+  Contact(Contact const & other);
+  /* Create a copy of an existing Contact.
+   */
+
   virtual ~Contact();
 
   Contact & operator= (Contact const & other);
@@ -68,8 +72,8 @@ public:
    * Return: The value of the contact flag.
    */
 
-  bool isOnGround() const;
-  /* Check for contact with the ground.
+  bool hasSupportingContact() const;
+  /* Check for contact on a 'supporting' side.
    * Return: True if there is contact on any bottom side, false otherwise.
    */
 };
