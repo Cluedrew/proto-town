@@ -7,6 +7,10 @@
  * even be an event system for other parts of the game?
  */
 
+#include <SFML/System/Utf.hpp>
+#include "controls.hpp"
+
+
 
 struct InputEvent
 {
@@ -20,6 +24,9 @@ struct InputEvent
     //ConsolMode,
     //ConsolInput,
 
+    // Player Event, some input has come in for the player character.
+    Player,
+
     // Player action keys.
     PlayerUp,
     PlayerRight,
@@ -31,18 +38,33 @@ struct InputEvent
     Ignored
   };
 
-  //struct PlayerButtonData
-  //{
-  //  Controls button;
-  //  bool isPressed;
-  //};
+  // One of the player's buttons has been pressed or released.
+  struct PlayerEvent
+  {
+    Controls button;
+    bool isPress;
+  };
 
-  //struct ConsolInputData
-  //{
-  //  ... text;
-  //};
+  // Open or close the consol.
+  struct ConsolModeEvent
+  {
+    bool open;
+  };
+
+  // Send text to the consol.
+  struct ConsolInputEvent
+  {
+    sf::Utf32 text;
+  };
 
   TypeValue type;
+
+  union
+  {
+    PlayerEvent player;
+    ConsolModeEvent consolMode;
+    ConsolInputEvent consolInput;
+  };
 
   // Later this will be a rather complex union to save space.
   // For player events, was it a press or a release?
@@ -58,6 +80,8 @@ struct InputEvent
   bool isIgnored () const;
   /* Is the event the ignored event?
    * Return: True if this event is Ignored, false otherwise.
+   *
+   * Short cut for: iEvent.type == InputEvent::Ignored
    */
 };
 

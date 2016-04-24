@@ -44,6 +44,10 @@ larger game state.
 imediate responce (probably a queue) until update happens. The second layer
 is everything that happens there.
 
+  Controls & ControlMap have been added to convert the keystrokes into mapped
+inputs. This allows for remapping although currently no means to preform the
+remapping exist.
+
 
 Update: mob-collect, mob, part-ai (+subclasses: player-ai)
   Update the game state taking into account the change in time and any new

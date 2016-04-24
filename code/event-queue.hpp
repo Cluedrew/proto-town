@@ -15,6 +15,7 @@
 
 #include <queue>
 #include "player-event.hpp"
+#include "input-event.hpp"
 
 // Event Queue Class =========================================================
 template<typename T>
@@ -53,5 +54,8 @@ public:
 
 // Holds input events colleted from the main loop for the player
 extern EventQueue<PlayerEvent> playerEvents;
+
+// Holds any input events not handled by the main loop.
+extern EventQueue<InputEvent> inputEvents;
 
 #endif//EVENT_QUEUE_HPP

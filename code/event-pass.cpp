@@ -37,6 +37,24 @@ static PlayerEvent::PlayerEnum lookUpKey (sf::Keyboard::Key key)
   }
 }
 
+static PlayerEvent::PlayerEnum lookUpButton (Controls button)
+{
+  switch (button)
+  {
+  case Controls::Left:
+    return PlayerEvent::KeyLeft;
+  case Controls::Right:
+    return PlayerEvent::KeyRight;
+  case Controls::Up:
+    return PlayerEvent::KeyUp;
+  case Controls::Down:
+    return PlayerEvent::KeyDown;
+  case Controls::Action:
+  default:
+    return PlayerEvent::KeyAction;
+  }
+}
+
 // Handler for KeyDown and TextEntered events.
 void EventPass::handleEvent (sf::Event const & event)
 {
@@ -83,6 +101,10 @@ void EventPass::handleEvent (InputEvent const & event)
     pEvent.type = PlayerEvent::KeyDown;
     break;
   case InputEvent::PlayerAction:
+    break;
+  case InputEvent::Player:
+    pEvent.type = lookUpButton(event.player.button);
+    pEvent.pressed = event.player.isPress;
     break;
   default:
     pEvent.type = PlayerEvent::KeyAction;

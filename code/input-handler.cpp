@@ -26,8 +26,9 @@ InputHandler::~InputHandler ()
  *   physical to purpose, and so have a slightly different interface, but
  *   this is close enough for now.
  */
-static void controlsLookUp(sf::Event const & event, InputEvent & ievent)
+static void controlsLookup(sf::Event const & event, InputEvent & iEvent)
 {
+  /*
   static ControlMap mapping;
   Controls button = mapping.lookupKey(event.key.code);
   switch (button)
@@ -56,6 +57,16 @@ static void controlsLookUp(sf::Event const & event, InputEvent & ievent)
     ievent.buttonPressed = true;
   else
     ievent.buttonPressed = false;
+  */
+  static ControlMap mapping;
+  iEvent.player.button = mapping.lookupKey(event.key.code);
+  if (iEvent.player.button == Controls::Cap)
+    iEvent.type = InputEvent::Ignored;
+  else
+  {
+    iEvent.type = InputEvent::Player;
+    iEvent.player.isPress = (sf::Event::KeyPressed == event.type);
+  }
 }
 
 void InputHandler::eventTranslate
@@ -68,21 +79,10 @@ void InputHandler::eventTranslate
     break;
   case sf::Event::KeyPressed:
   case sf::Event::KeyReleased:
-    //if (consolUp)
-    //  type = Ignored;
-    //else
-      // Temperary, although it might be a while before we get
-      // a proper system for the controls.
-      controlsLookUp(sfEvent, iEvent);
-    //
+    controlsLookup(sfEvent, iEvent);
     break;
   case sf::Event::TextEntered:
-    //if (consolUp)
-    //{}
-    //else
-    //{
-      iEvent.type = InputEvent::Ignored;
-    //}
+    iEvent.type = InputEvent::Ignored;
     break;
   default:
     iEvent.type = InputEvent::Ignored;

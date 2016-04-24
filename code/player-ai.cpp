@@ -13,7 +13,7 @@
 
 // Constructors and Deconstructor ============================================
 PlayerAI::PlayerAI () :
-  fallTimer(sf::Time::Zero)
+  fallTimer(sf::Time::Zero), buttons{false}
 {}
 
 PlayerAI::~PlayerAI ()
