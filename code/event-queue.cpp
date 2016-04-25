@@ -7,4 +7,4 @@
 // Holds input events colleted from the main loop for the player
 EventQueue<PlayerEvent> playerEvents;
 
-EventQueue<InputEvent> inputEvents;
+EventQueue<InputEvent> inputEventQueue;

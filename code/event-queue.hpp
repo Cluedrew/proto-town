@@ -8,7 +8,7 @@
  * Currantly, this is just a wrapper around a standard queue, but I might add
  * more functionality later (particulaly for viewing elements without deleting
  * them from the queue).
- * 
+ *
  * Its not a perfect solution but better than passing messages across every
  * container and component.
  */
@@ -56,6 +56,6 @@ public:
 extern EventQueue<PlayerEvent> playerEvents;
 
 // Holds any input events not handled by the main loop.
-extern EventQueue<InputEvent> inputEvents;
+extern EventQueue<InputEvent> inputEventQueue;
 
 #endif//EVENT_QUEUE_HPP

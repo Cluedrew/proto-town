@@ -18,7 +18,7 @@
 #include "loop-clock.hpp"
 #include "mob-collect.hpp"
 #include "image-def.hpp"
-#include "event-pass.hpp"
+#include "event-queue.hpp"
 #include "input-event.hpp"
 #include "input-handler.hpp"
 
@@ -47,8 +47,7 @@ int main (int argc, char * argv[])
     // The map, its "tile set" comes from the imageLib.
     Map map(imageLib);
 
-    // Part of the event handler,
-    EventPass eventPass;
+    // Part of the input handler.
     InputHandler inHandle;
 
     // Start the game clock right before hitting the main loop. 60fps
@@ -70,7 +69,7 @@ int main (int argc, char * argv[])
             std::cerr << "Ignored event appeared in the event loop.\n";
             break;
           default:
-            eventPass.handleEvent(event);
+            inputEventQueue.regesterEvent(event);
             break;
         }
       }

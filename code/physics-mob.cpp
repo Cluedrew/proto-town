@@ -41,6 +41,7 @@ PhysicsMob PhysicsMob::forwardCopy(sf::Time const & time) const
                     y + dy * dt + 0.5f * ddy * dt * dt,
                     w, h,
                     dx + ddx * dt, dy + ddy * dt,
+                    //0, 0, Contact());
                     ddx, ddy,
                     contact);
 }

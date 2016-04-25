@@ -3,7 +3,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Window.hpp>
 #include "input-event.hpp"
-#include "control-map.hpp"
+#include "button-map.hpp"
 
 // Constructors and Deconstructor:
 //InputHandler::InputHandler () :{}
@@ -28,39 +28,9 @@ InputHandler::~InputHandler ()
  */
 static void controlsLookup(sf::Event const & event, InputEvent & iEvent)
 {
-  /*
-  static ControlMap mapping;
-  Controls button = mapping.lookupKey(event.key.code);
-  switch (button)
-  {
-  case Controls::Up:
-    ievent.type = InputEvent::PlayerUp;
-    break;
-  case Controls::Down:
-    ievent.type = InputEvent::PlayerDown;
-    break;
-  case Controls::Left:
-    ievent.type = InputEvent::PlayerLeft;
-    break;
-  case Controls::Right:
-    ievent.type = InputEvent::PlayerRight;
-    break;
-  case Controls::Action:
-    ievent.type = InputEvent::PlayerAction;
-    break;
-  default:
-    ievent.type = InputEvent::Ignored;
-    return;
-  }
-
-  if (sf::Event::KeyPressed == event.type)
-    ievent.buttonPressed = true;
-  else
-    ievent.buttonPressed = false;
-  */
-  static ControlMap mapping;
+  static ButtonMap mapping;
   iEvent.player.button = mapping.lookupKey(event.key.code);
-  if (iEvent.player.button == Controls::Cap)
+  if (iEvent.player.button == Button::Cap)
     iEvent.type = InputEvent::Ignored;
   else
   {
@@ -69,6 +39,7 @@ static void controlsLookup(sf::Event const & event, InputEvent & iEvent)
   }
 }
 
+// see header
 void InputHandler::eventTranslate
     (sf::Event const & sfEvent, InputEvent & iEvent) const
 {
@@ -90,7 +61,7 @@ void InputHandler::eventTranslate
   }
 }
 
-
+// see header
 InputEvent InputHandler::eventTranslate (sf::Event const & sfEvent) const
 {
   InputEvent iEvent;
@@ -98,7 +69,7 @@ InputEvent InputHandler::eventTranslate (sf::Event const & sfEvent) const
   return iEvent;
 }
 
-
+// see header
 bool InputHandler::pollEventFrom
     (sf::Window & window, InputEvent & iEvent) const
 {

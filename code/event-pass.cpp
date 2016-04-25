@@ -37,19 +37,19 @@ static PlayerEvent::PlayerEnum lookUpKey (sf::Keyboard::Key key)
   }
 }
 
-static PlayerEvent::PlayerEnum lookUpButton (Controls button)
+static PlayerEvent::PlayerEnum lookUpButton (Button button)
 {
   switch (button)
   {
-  case Controls::Left:
+  case Button::Left:
     return PlayerEvent::KeyLeft;
-  case Controls::Right:
+  case Button::Right:
     return PlayerEvent::KeyRight;
-  case Controls::Up:
+  case Button::Up:
     return PlayerEvent::KeyUp;
-  case Controls::Down:
+  case Button::Down:
     return PlayerEvent::KeyDown;
-  case Controls::Action:
+  case Button::Action:
   default:
     return PlayerEvent::KeyAction;
   }

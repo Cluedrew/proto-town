@@ -8,7 +8,7 @@
  */
 
 #include <SFML/System/Utf.hpp>
-#include "controls.hpp"
+#include "button.hpp"
 
 
 
@@ -41,7 +41,7 @@ struct InputEvent
   // One of the player's buttons has been pressed or released.
   struct PlayerEvent
   {
-    Controls button;
+    Button button;
     bool isPress;
   };
 

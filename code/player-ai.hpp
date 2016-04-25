@@ -6,13 +6,13 @@
 
 #include <SFML/System/Time.hpp>
 #include "part-ai.hpp"
-#include "controls.hpp"
+#include "button.hpp"
 
 class PlayerAI : public PartAI
 {
 private:
     sf::Time fallTimer;
-    ControlsArray<bool> buttons;
+    ButtonArray<bool> buttons;
 protected:
 public:
   PlayerAI ();

@@ -51,7 +51,7 @@ protected:
 public:
   PhysicsMob (float x, float y, float w, float h,
               float dx, float dy, float ddx, float ddy,
-              Contact contact) :
+              Contact contact = Contact()) :
     x(x), y(y), w(w), h(h), dx(dx), dy(dy), ddx(ddx), ddy(ddy),
     contact(contact)
   {}

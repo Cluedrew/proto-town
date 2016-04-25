@@ -7,14 +7,14 @@
 
 ### Variables & Setup
 
-# Leave empty to compile for release, otherwise system compiles for debugging.
-USE_DEBUG=
+# 'yes' to turn on debugging options, otherwise leaves them off.
+USE_DEBUG=no
 
 # Name of binary executable.
 EXE=proto-town
 
 # The base name of every code file used to create the binary.
-FILENAMES=main utils loop-clock event-queue event-pass control-map \
+FILENAMES=main utils loop-clock event-queue button-map \
 	map image-lib tile \
 	mob mob-collect part-ai player-ai \
 	physics-1 physics-2 physics-3 physics-mob contact accel-request \
@@ -38,7 +38,9 @@ OBJFILES=${FILENAMES:%=${TMPDIR}/%.o}
 DEPFILES=${OBJFILES:%.o=%.d}
 
 # If USE_DEBUG add the DUBUG flags.
-CXXFLAGS+=${if ${USE_DEBUG},${DEBUG},}
+ifeq ($(USE_DEBUG),yes)
+  CXXFLAGS+=${DEBUG}
+endif
 
 .PHONY : all clean test
 
