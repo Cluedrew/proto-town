@@ -1,8 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-/* The game map handles both the grid based tiles as well as the list of mobs
- * that wander around on it. It is a real heavy weight.
+/* The game map handles both the grid based tiles that make up the world.
  */
 
 // Consider making it inherarit from sf::Drawable (with the tiles) so

@@ -1,8 +1,5 @@
 #include "button-map.hpp"
 
-// Definition from Button.hpp
-const unsigned int numOfButtons = int(Button::Cap);
-
 // Implementation of the button mapping.
 
 

@@ -13,6 +13,7 @@ enum class Button
   Cap
 };
 
+// The number of valid button codes, excludes Button::Cap.
 extern const unsigned int numOfButtons;
 
 template<typename T>

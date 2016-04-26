@@ -72,9 +72,10 @@ public:
    * Return: The value of the contact flag.
    */
 
-  bool hasSupportingContact() const;
-  /* Check for contact on a 'supporting' side.
-   * Return: True if there is contact on any bottom side, false otherwise.
+  bool hasBottomContact() const;
+  /* Check for contact on a bottom side.
+   * Return: True if there is contact on any of the Bottom, BottomLeft or
+   *   BottomRight sides, false otherwise.
    */
 };
 

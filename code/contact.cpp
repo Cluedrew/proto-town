@@ -61,8 +61,8 @@ bool Contact::hasContact(Side side) const
   return sides[side];
 }
 
-// Check for contact with the ground.
-bool Contact::hasSupportingContact() const
+// see header
+bool Contact::hasBottomContact() const
 {
   return sides[BottomLeft] || sides[Bottom] || sides[BottomRight];
 }

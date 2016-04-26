@@ -50,7 +50,7 @@ PhysicsMob PhysicsMob::forwardCopy(sf::Time const & time) const
 // see header
 bool PhysicsMob::isOnGround() const
 {
-  return contact.hasSupportingContact();
+  return contact.hasBottomContact();
 }
 
 

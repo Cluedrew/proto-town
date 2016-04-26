@@ -67,6 +67,8 @@ PartAI * Mob::selectAI (MobID id)
 // Move the mob one frame forward in time.
 void Mob::update (sf::Time const & fr, Map & map)
 {
+  phys.ddx = phys.ddy = 0;
+
   // Run the AI and perform the local updates.
   ai->update(*this, fr, map);
 

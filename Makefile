@@ -14,7 +14,7 @@ USE_DEBUG=no
 EXE=proto-town
 
 # The base name of every code file used to create the binary.
-FILENAMES=main utils loop-clock event-queue button-map \
+FILENAMES=main utils loop-clock event-queue button button-map \
 	map image-lib tile \
 	mob mob-collect part-ai player-ai \
 	physics-1 physics-2 physics-3 physics-mob contact accel-request \
