@@ -56,7 +56,7 @@ private:
   // Please Ignore unless you are intrested in the implementation.
 
   static PhysicsMob singleEntityWithWorldCore
-      (PhysicsMob const &, sf::Time const &, Map const &);
+      (PhysicsMob const &, sf::Time const &, Map const &, bool &);
   /* Increment a Mob's movement across the Map over Time.
    *   Note that this is for very small, 'safe' amounts of movement.
    * Params:

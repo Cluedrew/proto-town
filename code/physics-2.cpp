@@ -15,7 +15,8 @@
 
 // Calculate a single Mob's movement across the Map.
 PhysicsMob Physics::singleEntityWithWorldCore
-  (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map)
+  (PhysicsMob const & physM, sf::Time const & deltaT, Map const & map,
+   bool & success)
 {
   // New state of the entity if there is no collition.
   PhysicsMob newState = physM.forwardCopy(deltaT);
@@ -35,6 +36,7 @@ PhysicsMob Physics::singleEntityWithWorldCore
   }
 
   // If there was a collition, stop all movement.
+  success = !collides;
   return (collides) ? PhysicsMob(physM.x, physM.y, physM.w,
                                  physM.h, 0, 0, 0, 0, Contact())
                     : newState;

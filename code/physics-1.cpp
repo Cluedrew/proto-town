@@ -17,8 +17,18 @@
 PhysicsMob Physics::singleEntityWithWorld
     (Mob const & mob, sf::Time const & fr, Map const & map)
 {
-  // This will later break large movements into even smaller increments.
-  return singleEntityWithWorldCore(mob.getPhysics(), fr, map);
+  bool success = true;
+  PhysicsMob nextPhys =
+      singleEntityWithWorldCore(mob.getPhysics(), fr, map, success);
+  if (!success)
+  {
+    sf::Time halfFr = fr / 2.0f;
+    nextPhys =
+        singleEntityWithWorldCore(mob.getPhysics(), halfFr, map, success);
+  }
+
+  nextPhys.contact = newMobContact(nextPhys, map);
+  return nextPhys;
 }
 
 /* Possible update, so I can get ride of the billion deltaT arguments.

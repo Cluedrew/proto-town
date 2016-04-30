@@ -67,12 +67,10 @@ PartAI * Mob::selectAI (MobID id)
 // Move the mob one frame forward in time.
 void Mob::update (sf::Time const & fr, Map & map)
 {
-  phys.ddx = phys.ddy = 0;
-
   // Run the AI and perform the local updates.
   ai->update(*this, fr, map);
 
-  Contact lastContact = phys.contact;
+  //Contact lastContact = phys.contact;
 
   // Run forward through time according to physics.
   phys = Physics::singleEntityWithWorld(*this, fr, map);
@@ -81,8 +79,9 @@ void Mob::update (sf::Time const & fr, Map & map)
   // Sort of wanted this to be in draw, but that has to be constant.
   sprite.setPosition(phys.x, phys.y);
 
-  Contact nextContact = Physics::newMobContact(phys, map);
-  /*if (nextContact != lastContact)
+  /*
+  Contact nextContact = phys.contact;
+  if (nextContact != lastContact)
   {
     Contact::Side viewSides[8] = {Contact::Top, Contact::TopRight,
         Contact::Right, Contact::BottomRight, Contact::Bottom,
@@ -94,8 +93,9 @@ void Mob::update (sf::Time const & fr, Map & map)
     for (int i = 0 ; i < 8 ; ++i)
       { std::cout << (nextContact[viewSides[i]] ? '|' : '-'); }
     std::cout << std::endl;
-  }*/
+  }
   phys.contact = nextContact;
+  */
 }
 
 // Getter Functions ----------------------------------------------------------

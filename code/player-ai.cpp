@@ -10,7 +10,6 @@
 #include "accel-request.hpp"
 #include "utils.hpp"
 
-
 // Constructors and Deconstructor ============================================
 PlayerAI::PlayerAI () :
   fallTimer(sf::Time::Zero), buttons{false}
@@ -52,6 +51,9 @@ void PlayerAI::update (Mob & mob, sf::Time const & fr, Map & map)
       buttons[int(iEvent.player.button)] = iEvent.player.isPress;
     }
   }
+
+  physics.ddx = physics.ddy = 0;
+
 
   if (physics.isOnGround())
   {
