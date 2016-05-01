@@ -36,6 +36,8 @@ enum class TileID : unsigned char
   blueSky,
   grass,
   dirt,
+  grassFG,
+  dirtFG,
   cap
 };
 
