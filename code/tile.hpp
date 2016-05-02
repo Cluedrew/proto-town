@@ -4,6 +4,7 @@
 /* A tile on the map,
  */
 
+#include <vector>
 #include <SFML/Graphics.hpp>
 enum class TileID : unsigned char;
 class ImageLib;
@@ -17,6 +18,10 @@ private:
 
   // The sprite that repersents the background of the tile.
   sf::Sprite background;
+
+  // Sprites in the foreground of the tile.
+  // Foreground objects are all the same so there is no additional data.
+  std::vector<sf::Sprite> foreground;
 
   // Is the tile passable or not?
   bool passable;
@@ -43,6 +48,21 @@ public:
   bool passableEh () const;
   /* Check to see if the tile is passable.
    * Return: True if the tile is passable, false if it is 'solid'.
+   */
+
+  void pushForeground(TileID foreground_, ImageLib & lib);
+  /* Push the object repersented by TileID into the foreground of the Tile.
+   * Params: The id of the Tile that repersints the object and the lib to
+   *   draw the sprite from.
+   * Effect: Adds an object to the forground. May dhange if the Tile is
+   *   passable or not.
+   */
+
+  void cullForeground();
+  /* Remove the foremost object from the Tile's foreground.
+   *   There must be at least one object in the forground.
+   * Effect: Removes an object from the foreground. May change if the Tile
+   *   is passable or not.
    */
 };
 

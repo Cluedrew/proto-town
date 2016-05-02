@@ -21,9 +21,17 @@ Map::Map (ImageLib & lib) :
       else if (10 > y)
         tiles.at(x, y).init(x, y, TileID::blueSky, lib);
       else if (10 < y)
+      {
         tiles.at(x, y).init(x, y, TileID::dirt, lib);
+        //if (x < 20)
+        //  tiles.at(x, y).pushForeground(TileID::dirtFG, lib);
+      }
       else // (10 == y)
+      {
         tiles.at(x, y).init(x, y, TileID::grass, lib);
+        //if (x < 20)
+        //  tiles.at(x, y).pushForeground(TileID::grassFG, lib);
+      }
     }
   }
 }
